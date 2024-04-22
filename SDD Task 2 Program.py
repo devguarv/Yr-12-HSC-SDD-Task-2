@@ -1,1 +1,1 @@
-test
+from tkinter import *
