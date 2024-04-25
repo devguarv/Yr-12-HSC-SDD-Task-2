@@ -7,6 +7,11 @@ DIR_NAME = path.dirname(path.abspath(__file__)) #Determine the absolute path of 
 
 def select_subject():
     pass
+    #subject_frame = CTkFrame(root)
+
+    #phys_btn = CTkButton(frame=subject_frame)
+
+    
 
 def select_options():
     pass
