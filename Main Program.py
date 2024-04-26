@@ -33,7 +33,7 @@ default_geometry_y = 500
 set_appearance_mode("light")
 
 #Creating a local file access for the image to be imported
-arrow_img_path = path.join(DIR_NAME, "arrow-24-24.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
+arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
 arrow_img = Image.open(arrow_img_path)
 
 # Define the desired smaller size
@@ -48,7 +48,7 @@ v2arrow_img = ImageTk.PhotoImage(resize_arrow_img)
 root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
 #Initiliasing the file path for the atom icon
-atom_img_path = path.join(DIR_NAME, "atom_icon-removebg-preview.png")
+atom_img_path = path.join(DIR_NAME, "Assets", "atom_icon.png")
 atom_img = Image.open(atom_img_path)
 
 small_atom_size = (30, 30)
