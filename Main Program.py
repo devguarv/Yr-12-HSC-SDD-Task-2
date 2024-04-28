@@ -27,7 +27,7 @@ small_arrow_size = (20, 20)
 resize_arrow_img = arrow_img.resize(small_arrow_size)
 
 # Convert resized image to PhotoImage
-v2arrow_img = ImageTk.PhotoImage(resize_arrow_img)
+v2arrow_img = CTkImage(resize_arrow_img)
 
 root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
@@ -39,10 +39,31 @@ small_atom_size = (30, 30)
 
 resize_atom_img = atom_img.resize(small_atom_size)
 
-v2atom_img = ImageTk.PhotoImage(resize_atom_img)
+v2atom_img = CTkImage(resize_atom_img)
 
 def select_subject():
-    pass
+    global subject_frame
+    container.pack_forget() #Removes main container when switched
+
+    subject_frame = CTkFrame(root)
+    subject_frame.pack(expand=True, fill=BOTH)
+
+    subject_title_font = ("Arial", 24, UNDERLINE)
+
+    subject_title = CTkLabel(subject_frame, text="Subject Selection", text_color="Black", font=subject_title_font)
+    subject_title.place(relx=0.5, rely=0.35, anchor="center")
+    
+    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    phys_btn.place(relx=0.5, rely=0.5, anchor="center")
+
+    chem_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    chem_btn.place(relx=0.5, rely=0.6, anchor="center")
+
+    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    bio_btn.place(relx=0.5, rely=0.7, anchor="center")
+
+
+
 
 
 
@@ -57,23 +78,24 @@ def back_to_main_menu():
     pass
 
 
+container = CTkFrame(root) #To store the main widgets for simplicity
+container.pack(expand=True, fill=BOTH)
+
 #Creating title label
 title_font = ("Arial", 30)
-title_label = CTkLabel(master=root, text="Trifecta Quest", text_color="Black", font= title_font, image=v2atom_img, compound="right")
+title_label = CTkLabel( container, text="Trifecta Quest", text_color="Black", font= title_font, image=v2atom_img, compound="right")
 title_label.place(relx=0.5, rely=0.35, anchor="center")
 
-
-
 # Creating the begin button
-begin_btn = CTkButton(master=root, text="Begin", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command= select_subject)
+begin_btn = CTkButton(container, text="Begin", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command= select_subject)
 begin_btn.place(relx=0.5, rely=0.5, anchor="center")
 
 #Creating options button
-options_btn = CTkButton(master=root, text="Options", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_options)
+options_btn = CTkButton(container, text="Options", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_options)
 options_btn.place(relx=0.5, rely=0.6, anchor="center")
 
 #Creating the credits button
-credits_btn = CTkButton(master=root, text="Credits", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=credits)
+credits_btn = CTkButton(container, text="Credits", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=credits)
 credits_btn.place(relx=0.5, rely=0.7, anchor="center")
 
 
