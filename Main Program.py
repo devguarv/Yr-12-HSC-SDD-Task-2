@@ -20,6 +20,7 @@ set_appearance_mode("light")
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
 arrow_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\white arrow.png")
 
+
 # Define the desired smaller size
 small_arrow_size = (20, 20)
 
@@ -41,6 +42,12 @@ resize_atom_img = atom_img.resize(small_atom_size)
 
 v2atom_img = CTkImage(resize_atom_img)
 
+def to_main_frame():
+    subject_frame.pack_forget()
+    container.pack(expand=True, fill=BOTH)
+
+
+
 def select_subject():
     global subject_frame
     container.pack_forget() #Removes main container when switched
@@ -53,15 +60,37 @@ def select_subject():
     subject_title = CTkLabel(subject_frame, text="Subject Selection", text_color="Black", font=subject_title_font)
     subject_title.place(relx=0.5, rely=0.35, anchor="center")
     
-    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
     phys_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    chem_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    chem_btn = CTkButton(subject_frame, text="Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
     chem_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
+    back_btn = CTkButton(subject_frame, text="Back", text_color="White", command=to_main_frame)
+    back_btn.place(relx=0.15, rely=0.9, anchor="center")
+
+def select_difficulty():
+    global difficulty_frame
+    subject_frame.pack_forget() #Removes the previous subject frame
+
+    difficulty_frame = CTkFrame(root)
+    difficulty_frame.pack(expand=True, fill=BOTH)
+
+    difficulty_title_font = ("Arial", 24, UNDERLINE)
+    difficulty_title = CTkLabel(difficulty_frame, text="Select Difficulty", text_color="Black", font=difficulty_title_font)
+    difficulty_title.place(relx=0.5, rely=0.35, anchor="center")
+
+    easy_btn = CTkButton(difficulty_frame, text="Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    easy_btn.place(relx=0.5, rely=0.5, anchor="center")
+
+    med_btn = CTkButton(difficulty_frame, text="Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    med_btn.place(relx=0.5, rely=0.6, anchor="center")
+
+    hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    hard_btn.place(relx=0.5, rely=0.7, anchor="center")
 
 
 
