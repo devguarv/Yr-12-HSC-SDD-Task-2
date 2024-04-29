@@ -16,9 +16,12 @@ default_geometry_y = 500
 #Initialising the appearance theme for the program
 set_appearance_mode("light")
 
-#Creating a local file access for the image to be imported
+#Creating a local file access for the image to be importedw
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
 arrow_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\white arrow.png")
+
+left_arrow_img_path = path.join(DIR_NAME, "Assets", "left-arrow.png")
+left_arrow_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\left-arrow.png")
 
 
 # Define the desired smaller size
@@ -27,8 +30,12 @@ small_arrow_size = (20, 20)
 # Resize the arrow imagew
 resize_arrow_img = arrow_img.resize(small_arrow_size)
 
+resize_left_arrow_img = left_arrow_img.resize(small_arrow_size)
+
 # Convert resized image to PhotoImage
 v2arrow_img = CTkImage(resize_arrow_img)
+
+v2leftarrow_img = CTkImage(resize_left_arrow_img)
 
 root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
@@ -43,7 +50,11 @@ resize_atom_img = atom_img.resize(small_atom_size)
 v2atom_img = CTkImage(resize_atom_img)
 
 def to_main_frame():
+    global subject_frame, difficulty_frame
     subject_frame.pack_forget()
+    difficulty_frame.pack_forget()
+
+   
     container.pack(expand=True, fill=BOTH)
 
 
@@ -69,7 +80,7 @@ def select_subject():
     bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
-    back_btn = CTkButton(subject_frame, text="Back", text_color="White", command=to_main_frame)
+    back_btn = CTkButton(subject_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
 def select_difficulty():
@@ -91,6 +102,9 @@ def select_difficulty():
 
     hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
     hard_btn.place(relx=0.5, rely=0.7, anchor="center")
+
+    back_btn = CTkButton(difficulty_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
+    back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
 
 
