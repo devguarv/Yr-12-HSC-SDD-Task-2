@@ -1,0 +1,1 @@
+When running the file, you must ensure that the correct directory is specified when running the code; this can be done through the command line in vs code and through the command: cd "C://Directory Path//". Where directory path is where the folder for this program is saved in
