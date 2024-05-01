@@ -20,6 +20,9 @@ set_appearance_mode("light")
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
 arrow_img = Image.open(arrow_img_path)
 
+left_arrow_img_path = path.join(DIR_NAME, "Assets", "left-arrow.png")
+left_arrow_img = Image.open(left_arrow_img_path)
+
 
 # Define the desired smaller size
 small_arrow_size = (20, 20)
@@ -27,8 +30,11 @@ small_arrow_size = (20, 20)
 # Resize the arrow imagew
 resize_arrow_img = arrow_img.resize(small_arrow_size)
 
+resize_left_arrow_img = left_arrow_img.resize(small_arrow_size)
+
 # Convert resized image to PhotoImage
 v2arrow_img = CTkImage(resize_arrow_img)
+v2leftarrow_img = CTkImage(resize_left_arrow_img)
 
 root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
@@ -69,7 +75,7 @@ def select_subject():
     bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
-    back_btn = CTkButton(subject_frame, text="Back", text_color="White", command=to_main_frame)
+    back_btn = CTkButton(subject_frame, text="Back", text_color="White", image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
 def select_difficulty():
