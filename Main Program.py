@@ -18,7 +18,10 @@ set_appearance_mode("light")
 
 #Creating a local file access for the image to be importedw
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
-arrow_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\white arrow.png")
+arrow_img = Image.open(arrow_img_path)
+
+left_arrow_img_path = path.join(DIR_NAME, "Assets", "left-arrow.png")
+left_arrow_img = Image.open(left_arrow_img_path)
 
 left_arrow_img_path = path.join(DIR_NAME, "Assets", "left-arrow.png")
 left_arrow_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\left-arrow.png")
@@ -34,6 +37,7 @@ resize_left_arrow_img = left_arrow_img.resize(small_arrow_size)
 
 # Convert resized image to PhotoImage
 v2arrow_img = CTkImage(resize_arrow_img)
+v2leftarrow_img = CTkImage(resize_left_arrow_img)
 
 v2leftarrow_img = CTkImage(resize_left_arrow_img)
 
@@ -41,7 +45,7 @@ root.geometry("{width}x{height}".format(width=default_geometry_x, height=default
 
 #Initiliasing the file path for the atom icon
 atom_img_path = path.join(DIR_NAME, "Assets", "atom_icon.png")
-atom_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\atom_icon.png")
+atom_img = Image.open(atom_img_path)
 
 small_atom_size = (30, 30)
 
