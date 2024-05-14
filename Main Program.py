@@ -23,9 +23,6 @@ arrow_img = Image.open(arrow_img_path)
 left_arrow_img_path = path.join(DIR_NAME, "Assets", "left-arrow.png")
 left_arrow_img = Image.open(left_arrow_img_path)
 
-left_arrow_img_path = path.join(DIR_NAME, "Assets", "left-arrow.png")
-left_arrow_img = Image.open("C:\\Users\\devth\\OneDrive\\Desktop\\Assignment\\Yr-12-HSC-SDD-Task-2\\Assets\\left-arrow.png")
-
 
 # Define the desired smaller size
 small_arrow_size = (20, 20)
@@ -115,7 +112,17 @@ def select_difficulty():
 
 
 def select_options():
-    pass
+    container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
+
+    options_frame = CTkFrame(root)
+    options_frame.pack(expand=True, fill=BOTH)
+
+    font_size_label = CTkLabel(options_frame, text="Font Size", text_color="White")
+    font_size_label.place(relx=0.4, rely=0.5)
+
+    font_size_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
+    font_size_options.place(relx=0.5, rely=0.5)
+
 
 
 def credits():
