@@ -16,6 +16,8 @@ default_geometry_y = 500
 #Initialising the appearance theme for the program
 set_appearance_mode("light")
 
+global subject_frame, difficulty_frame
+
 #Creating a local file access for the image to be importedw
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
 arrow_img = Image.open(arrow_img_path)
@@ -51,12 +53,19 @@ resize_atom_img = atom_img.resize(small_atom_size)
 v2atom_img = CTkImage(resize_atom_img)
 
 def to_main_frame():
-    global subject_frame, difficulty_frame
+    global subject_frame, difficulty_frame, options_frame
+    container.pack(expand=True, fill=BOTH)
+
+    options_frame.pack_forget()
     subject_frame.pack_forget()
     difficulty_frame.pack_forget()
 
    
-    container.pack(expand=True, fill=BOTH)
+    
+
+
+def update_font_size():
+    pass
 
 
 
@@ -113,15 +122,18 @@ def select_difficulty():
 
 def select_options():
     container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
-
+    global options_frame
     options_frame = CTkFrame(root)
     options_frame.pack(expand=True, fill=BOTH)
 
-    font_size_label = CTkLabel(options_frame, text="Font Size", text_color="White")
+    font_size_label = CTkLabel(options_frame, text="Font Size", text_color="White", bg_color="#3B8ED0", )
     font_size_label.place(relx=0.4, rely=0.5)
 
     font_size_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
     font_size_options.place(relx=0.5, rely=0.5)
+
+    back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
+    back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
 
 
