@@ -63,10 +63,10 @@ def to_subject_frame():
         difficulty_frame.pack_forget()
 
 
-
-
 def update_font_size():
     pass
+
+
 
 def select_subject():
     global subject_frame
@@ -119,14 +119,18 @@ def select_options():
     global options_frame
     container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
 
+
+
     options_frame = CTkFrame(root)
     options_frame.pack(expand=True, fill=BOTH)
 
-    font_size_label = CTkLabel(options_frame, text="Font Size", text_color="White", bg_color="#3B8ED0", )
-    font_size_label.place(relx=0.4, rely=0.5)
+    font_style_lbl_settings= ("Arial", 15, UNDERLINE)
 
-    font_size_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
-    font_size_options.place(relx=0.5, rely=0.3)
+    font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
+    font_style_label.place(relx=0.37, rely=0.3)
+
+    font_style_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
+    font_style_options.place(relx=0.5, rely=0.3)
 
     back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
