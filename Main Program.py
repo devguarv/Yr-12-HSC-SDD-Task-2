@@ -2,6 +2,7 @@ from tkinter import *
 from customtkinter import *
 from PIL import Image, ImageTk
 from os import path
+from quiz_data import questions
 
 DIR_NAME = path.dirname(path.abspath(__file__)) #Determine the absolute path of a file
 
@@ -19,6 +20,10 @@ set_appearance_mode("light")
 subject_frame = None
 difficulty_frame = None
 options_frame = None
+quiz_frame = None
+quiz_progress = None
+current_question = 0
+score = 0
 
 
 #Creating a local file access for the image to be imported
@@ -62,11 +67,8 @@ def to_subject_frame():
     if difficulty_frame is not None:
         difficulty_frame.pack_forget()
 
-
 def update_font_size():
     pass
-
-
 
 def select_subject():
     global subject_frame
@@ -103,17 +105,35 @@ def select_difficulty():
     difficulty_title = CTkLabel(difficulty_frame, text="2. Select Difficulty", text_color="Black", font=difficulty_title_font)
     difficulty_title.place(relx=0.5, rely=0.35, anchor="center")
 
-    easy_btn = CTkButton(difficulty_frame, text="Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    easy_btn = CTkButton(difficulty_frame, text="Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = subject_easy)
     easy_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    med_btn = CTkButton(difficulty_frame, text="Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    med_btn = CTkButton(difficulty_frame, text="Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = subject_med)
     med_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32)
+    hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = subject_hard)
     hard_btn.place(relx=0.5, rely=0.7, anchor="center")
 
     back_btn = CTkButton(difficulty_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_subject_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
+
+def subject_easy():
+    global quiz_frame
+    difficulty_frame.pack_forget()
+
+    quiz_frame = CTkFrame(root)
+    quiz_frame.pack(expand=True, fill=BOTH)
+
+    question_label = CTkLabel(difficulty_frame)
+    question_label.pack()
+
+
+def subject_med():
+    pass
+
+def subject_hard():
+    pass
+
 
 def select_options():
     global options_frame
@@ -134,7 +154,6 @@ def select_options():
 
     back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
-
 
 def credits():
     pass
