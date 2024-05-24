@@ -172,17 +172,24 @@ def check_answer(qset):
         #Update the correct label
         check_label1.configure(text="Right")
         check_label1.place(relx=0.7, rely=0.7)
+        check_label2.place_forget()
 
         
     else:
         check_label2.configure(text="Wrong")
         check_label2.place(relx=0.7, rely=0.7)
+        check_label1.place_forget()
     
     
     #check_label1.configure(text="")
     #check_label2.configure(text="")
 
 def reconfigure_question_info(qset):
+    #Hides Labels
+    check_label1.place_forget()
+    check_label2.place_forget()
+
+
     #Changes the question label and options based on current item in qset
     question_label.configure(text=qset[0])
 
