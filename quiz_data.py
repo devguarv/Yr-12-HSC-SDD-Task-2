@@ -51,8 +51,8 @@ questions = {
             ("Question 20 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
         ],
         "Medium": [
-            ("Question 1 Chemistry Med", ["Option A", "Option B", "Option C", "Option D"]),
-            ("Question 2 Chemistry Med", ["Option A", "Option B", "Option C", "Option D"]),
+            ("Question 1 Chemistry Med", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 2 Chemistry Med", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
         ]
     },
     "Biology": {

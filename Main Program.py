@@ -22,6 +22,8 @@ difficulty_frame = None
 options_frame = None
 quiz_frame = None
 quiz_progress = None
+global subject_difficulty_text
+subject_difficulty_text = ""
 
 
 #Creating a local file access for the image to be imported
@@ -117,10 +119,15 @@ def select_difficulty(subject):
 
 def place_quiz_widgets():
     #Making the widgets for the quiz
-    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button
+    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text
 
     quiz_frame = CTkFrame(root) #Container
     quiz_frame.pack(expand=True, fill=BOTH)
+
+    subject_difficulty_font = CTkFont(family="Arial", size=24, weight="normal", slant="roman", underline=True)
+
+    subject_difficulty_label = CTkLabel(quiz_frame, text= subject_difficulty_text, font = subject_difficulty_font)
+    subject_difficulty_label.place(relx=0.2, rely=0.2, anchor="center")
 
     question_label = CTkLabel(quiz_frame, text="")
     question_label.place(relx=0.5, rely=0.2, anchor="center")
@@ -151,12 +158,29 @@ def on_submit():
     submit_answer_button.configure(state="disabled")
 
 def check_answer(qset):
+    global check_label1, check_label2
+
+    #Initialise check_label1, check_label2
+    check_label1 = CTkLabel(root, text="", bg_color="#dbdbdb", text_color="Green")
+    check_label2 = CTkLabel(root, text="", bg_color="#dbdbdb", text_color="Red")
+
+    #place labels off screen
+    check_label1.place(relx=-1000, rely=-1000)
+    check_label2.place(relx=-1000, rely=-1000)
+
     if qset[1][selection.get()] == qset[2]:
-        check_label1 = CTkLabel(root, text="Right", text_color="Green")
-        check_label1.place(relx=0.7, rely=0.3)
+        #Update the correct label
+        check_label1.configure(text="Right")
+        check_label1.place(relx=0.7, rely=0.7)
+
+        
     else:
-        check_label2 = CTkLabel(root, text="Wrong", text_color="Red")
-        check_label2.place(relx=0.7, rely=0.3)
+        check_label2.configure(text="Wrong")
+        check_label2.place(relx=0.7, rely=0.7)
+    
+    
+    #check_label1.configure(text="")
+    #check_label2.configure(text="")
 
 def reconfigure_question_info(qset):
     #Changes the question label and options based on current item in qset
@@ -174,10 +198,12 @@ def next_question(qset):
     return qset[0]
 
 def start_quiz(subject, difficulty):
-    global question_set
+    global question_set, subject_difficulty_text
     difficulty_frame.pack_forget()
 
     question_set = [*questions[subject][difficulty]] #Assigns the questions based of subject and difficulty
+
+    subject_difficulty_text = f"{subject.capitalize()} - {difficulty.capitalize()}" #update the subject_difficulty text with selected subject and difficulty
 
     place_quiz_widgets() #Places new base widgets for each qeustion
 
