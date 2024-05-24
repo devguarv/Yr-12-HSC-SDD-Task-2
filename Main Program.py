@@ -24,6 +24,8 @@ quiz_frame = None
 quiz_progress = None
 global subject_difficulty_text
 subject_difficulty_text = ""
+check_label1 = None
+check_label2 = None
 
 
 #Creating a local file access for the image to be imported
@@ -161,8 +163,10 @@ def check_answer(qset):
     global check_label1, check_label2
 
     #Initialise check_label1, check_label2
-    check_label1 = CTkLabel(root, text="", bg_color="#dbdbdb", text_color="Green")
-    check_label2 = CTkLabel(root, text="", bg_color="#dbdbdb", text_color="Red")
+    if check_label1 is None:
+        check_label1 = CTkLabel(root, text="", bg_color="#dbdbdb", text_color="Green")
+    if check_label2 is None:
+        check_label2 = CTkLabel(root, text="", bg_color="#dbdbdb", text_color="Red")
 
     #place labels off screen
     check_label1.place(relx=-1000, rely=-1000)
@@ -185,11 +189,7 @@ def check_answer(qset):
     #check_label2.configure(text="")
 
 def reconfigure_question_info(qset):
-    #Hides Labels
-    check_label1.place_forget()
-    check_label2.place_forget()
-
-
+    
     #Changes the question label and options based on current item in qset
     question_label.configure(text=qset[0])
 
