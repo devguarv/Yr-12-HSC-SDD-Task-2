@@ -22,8 +22,6 @@ difficulty_frame = None
 options_frame = None
 quiz_frame = None
 quiz_progress = None
-current_question = 0
-score = 0
 
 
 #Creating a local file access for the image to be imported
@@ -82,19 +80,19 @@ def select_subject():
     subject_title = CTkLabel(subject_frame, text="1. Select Subject", text_color="Black", font=subject_title_font)
     subject_title.place(relx=0.5, rely=0.35, anchor="center")
     
-    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
+    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty("Physics"))
     phys_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    chem_btn = CTkButton(subject_frame, text="Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
+    chem_btn = CTkButton(subject_frame, text="Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty("Chemistry"))
     chem_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty)
+    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty("Biology"))
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
     back_btn = CTkButton(subject_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
-def select_difficulty():
+def select_difficulty(subject):
     global difficulty_frame
     subject_frame.pack_forget() #Removes the previous subject frame
 
@@ -105,41 +103,87 @@ def select_difficulty():
     difficulty_title = CTkLabel(difficulty_frame, text="2. Select Difficulty", text_color="Black", font=difficulty_title_font)
     difficulty_title.place(relx=0.5, rely=0.35, anchor="center")
 
-    easy_btn = CTkButton(difficulty_frame, text="Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = subject_easy)
+    easy_btn = CTkButton(difficulty_frame, text="Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = lambda: start_quiz(subject, "Easy"))
     easy_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    med_btn = CTkButton(difficulty_frame, text="Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = subject_med)
+    med_btn = CTkButton(difficulty_frame, text="Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Medium"))
     med_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = subject_hard)
+    hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Hard"))
     hard_btn.place(relx=0.5, rely=0.7, anchor="center")
 
     back_btn = CTkButton(difficulty_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_subject_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
-def subject_easy():
-    global quiz_frame
-    difficulty_frame.pack_forget()
+def place_quiz_widgets():
+    #Making the widgets for the quiz
+    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button
 
-    quiz_frame = CTkFrame(root)
+    quiz_frame = CTkFrame(root) #Container
     quiz_frame.pack(expand=True, fill=BOTH)
 
-    question_label = CTkLabel(difficulty_frame)
-    question_label.pack()
+    question_label = CTkLabel(quiz_frame, text="")
+    question_label.place(relx=0.5, rely=0.2, anchor="center")
 
+    submit_answer_button = CTkButton(quiz_frame, text="Submit", command=on_submit, state="disabled")
+    submit_answer_button.place(relx=0.5, rely=0.9, anchor="center")
 
-def subject_med():
-    pass
+    selection = IntVar
+    placement_map = [(0.3, 0.5), (0.6,0.5), (0.3, 0.7), (0.6, 0.7)] # [radiobutton 1] [radiobutton 2]
+    
+    answer_radiobuttons = []
+    for i in range(4):
+        radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))  
+        answer_radiobuttons.append(radiobutton)
+        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
+    
+def on_submit():
+    qset = question_set[0]
+    check_answer(qset)
 
-def subject_hard():
-    pass
+    next_set = next_question(question_set)
+    if not next_set: #User is done
+        quiz_frame.pack_forget()
+        select_subject()
+        return
+    
+    reconfigure_question_info(next_set)
+    submit_answer_button.configure(state="disabled")
 
+def check_answer(qset):
+    if qset[1][selection.get()] == qset[2]:
+        print("Right")
+    else:
+        print("Wrong")
+
+def reconfigure_question_info(qset):
+    #Changes the question label and options based on current item in qset
+    question_label.configure(text=qset[0])
+
+    for i, button in enumerate(answer_radiobuttons):
+        button.configure(text=qset[1][i])
+    selection.set(-1) #Removes the user radiobutton selection
+
+def next_question(qset):
+    #Deletes the current question and returns the qset array
+    del qset[0]
+    if not qset:
+        return None
+    return qset[0]
+
+def start_quiz(subject, difficulty):
+    global question_set
+    difficulty_frame.pack_forget()
+
+    question_set = [*questions[subject][difficulty]] #Assigns the questions based of subject and difficulty
+
+    place_quiz_widgets() #Places new base widgets for each qeustion
+
+    reconfigure_question_inof(question_set[0]) #Initiliase question info
 
 def select_options():
     global options_frame
     container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
-
-
 
     options_frame = CTkFrame(root)
     options_frame.pack(expand=True, fill=BOTH)
