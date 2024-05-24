@@ -80,13 +80,13 @@ def select_subject():
     subject_title = CTkLabel(subject_frame, text="1. Select Subject", text_color="Black", font=subject_title_font)
     subject_title.place(relx=0.5, rely=0.35, anchor="center")
     
-    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty("Physics"))
+    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Physics"))
     phys_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    chem_btn = CTkButton(subject_frame, text="Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty("Chemistry"))
+    chem_btn = CTkButton(subject_frame, text="Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Chemistry"))
     chem_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_difficulty("Biology"))
+    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Biology"))
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
     back_btn = CTkButton(subject_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
@@ -128,7 +128,7 @@ def place_quiz_widgets():
     submit_answer_button = CTkButton(quiz_frame, text="Submit", command=on_submit, state="disabled")
     submit_answer_button.place(relx=0.5, rely=0.9, anchor="center")
 
-    selection = IntVar
+    selection = IntVar()
     placement_map = [(0.3, 0.5), (0.6,0.5), (0.3, 0.7), (0.6, 0.7)] # [radiobutton 1] [radiobutton 2]
     
     answer_radiobuttons = []
@@ -152,9 +152,11 @@ def on_submit():
 
 def check_answer(qset):
     if qset[1][selection.get()] == qset[2]:
-        print("Right")
+        check_label1 = CTkLabel(root, text="Right", text_color="Green")
+        check_label1.place(relx=0.7, rely=0.3)
     else:
-        print("Wrong")
+        check_label2 = CTkLabel(root, text="Wrong", text_color="Red")
+        check_label2.place(relx=0.7, rely=0.3)
 
 def reconfigure_question_info(qset):
     #Changes the question label and options based on current item in qset
@@ -179,7 +181,7 @@ def start_quiz(subject, difficulty):
 
     place_quiz_widgets() #Places new base widgets for each qeustion
 
-    reconfigure_question_inof(question_set[0]) #Initiliase question info
+    reconfigure_question_info(question_set[0]) #Initiliase question info
 
 def select_options():
     global options_frame

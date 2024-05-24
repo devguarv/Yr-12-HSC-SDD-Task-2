@@ -1,14 +1,12 @@
-#quiz_data
-
 questions = {
     "Physics": {
         "Easy": [
             ("Question 1 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 2 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 3 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C")
+            ("Question 3 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 4 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 5 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 6 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C")
+            ("Question 6 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 7 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 8 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 9 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
@@ -23,67 +21,66 @@ questions = {
             ("Question 18 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 19 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
             ("Question 20 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-             ],
+        ],
         "Medium": [
             ("Question 1 Physics Med", ["Option A", "Option B", "Option C", "Option D"]),
             ("Question 2 Physics Med", ["Option A", "Option B", "Option C", "Option D"]),
         ]
-
     },
     "Chemistry": {
         "Easy": [
-            ("Question 1 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 2 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 3 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C")
-            ("Question 4 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 5 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 6 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C")
-            ("Question 7 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 8 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 9 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 10 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 11 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 12 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 13 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 14 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 15 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 16 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 17 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 18 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 19 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 20 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-             ],
+            ("Question 1 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 2 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 3 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 4 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 5 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 6 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 7 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 8 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 9 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 10 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 11 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 12 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 13 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 14 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 15 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 16 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 17 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 18 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 19 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 20 Chemistry Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+        ],
         "Medium": [
-            ("Question 1 Physics Med", ["Option A", "Option B", "Option C", "Option D"]),
-            ("Question 2 Physics Med", ["Option A", "Option B", "Option C", "Option D"]),
+            ("Question 1 Chemistry Med", ["Option A", "Option B", "Option C", "Option D"]),
+            ("Question 2 Chemistry Med", ["Option A", "Option B", "Option C", "Option D"]),
         ]
     },
     "Biology": {
         "Easy": [
-            ("Question 1 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 2 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 3 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C")
-            ("Question 4 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 5 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 6 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C")
-            ("Question 7 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 8 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 9 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 10 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 11 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 12 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 13 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 14 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 15 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 16 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 17 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 18 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 19 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-            ("Question 20 Physics Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
-             ],
+            ("Question 1 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 2 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 3 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 4 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 5 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 6 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 7 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 8 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 9 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 10 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 11 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 12 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 13 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 14 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 15 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 16 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 17 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 18 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 19 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+            ("Question 20 Biology Easy", ["Option A", "Option B", "Option C", "Option D"], "Option C"),
+        ],
         "Medium": [
-            ("Question 1 Physics Med", ["Option A", "Option B", "Option C", "Option D"]),
-            ("Question 2 Physics Med", ["Option A", "Option B", "Option C", "Option D"]),
+            ("Question 1 Biology Med", ["Option A", "Option B", "Option C", "Option D"]),
+            ("Question 2 Biology Med", ["Option A", "Option B", "Option C", "Option D"]),
         ]
     }
-}    
+}
