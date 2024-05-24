@@ -21,6 +21,7 @@ subject_frame = None
 difficulty_frame = None
 options_frame = None
 quiz_frame = None
+creduts_frame = None
 quiz_progress = None
 global subject_difficulty_text
 subject_difficulty_text = ""
@@ -61,6 +62,8 @@ def to_main_frame():
         difficulty_frame.pack_forget()
     if options_frame is not None:
         options_frame.pack_forget()
+    if credits_frame is not None:
+        credits_frame.pack_forget()
    
 def to_subject_frame():
     global subject_frame, difficulty_frame, options_frame
@@ -189,7 +192,7 @@ def check_answer(qset):
     #check_label2.configure(text="")
 
 def reconfigure_question_info(qset):
-    
+
     #Changes the question label and options based on current item in qset
     question_label.configure(text=qset[0])
 
@@ -234,8 +237,41 @@ def select_options():
     back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
-def credits():
-    pass
+def to_credits():
+    global credits_frame
+    #Remove Initial Frame
+    container.pack_forget()
+
+    credits_frame = CTkFrame(root)
+    credits_frame.pack(expand=True, fill=BOTH)
+
+    title_font = ("Arial", 24, UNDERLINE)
+    credits_title_lbl = CTkLabel(credits_frame, text="Credits", text_color="Black", font=title_font, anchor="center")
+    credits_title_lbl.place(relx=0.2, rely=0.1)
+
+    status_lbl = CTkLabel(credits_frame, text="Status of Program: Open Source", text_color="Green", anchor="center")
+    status_lbl.place(relx=0.37, rely=0.04)
+
+    job1_lbl = CTkLabel(credits_frame, text="Lead Developer: ", text_color="Black", anchor="center")
+    job1_lbl.place(relx=0.2, rely=0.2)
+
+    job2_lbl = CTkLabel(credits_frame, text="Project Manager: ", text_color="Black", anchor="center")
+    job2_lbl.place(relx=0.2, rely=0.3)
+
+    job3_lbl = CTkLabel(credits_frame, text="UI Designer: ", text_color="Black", anchor="center")
+    job3_lbl.place(relx=0.2, rely=0.4)
+
+    job4_lbl = CTkLabel(credits_frame, text="System Designer: ", text_color="Black", anchor="center")
+    job4_lbl.place(relx=0.2, rely=0.5)
+
+    job5_lbl = CTkLabel(credits_frame, text="Data Analyst: ", text_color="Black", anchor="center")
+    job5_lbl.place(relx=0.2, rely=0.6)
+
+    job6_lbl = CTkLabel(credits_frame, text="Scrum Master: ", text_color="Black", anchor="center")
+    job6_lbl.place(relx=0.2, rely=0.7)
+
+    back_button = CTkButton(credits_frame, text="Back", width=10, image=v2leftarrow_img, compound="left", text_color="White", command=to_main_frame)
+    back_button.place(relx=0.15, rely=0.9, anchor="center")
 
 def back_to_main_menu():
     pass
@@ -258,7 +294,7 @@ options_btn = CTkButton(container, text="Options", text_color="White", image=v2a
 options_btn.place(relx=0.5, rely=0.6, anchor="center")
 
 #Creating the credits button
-credits_btn = CTkButton(container, text="Credits", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=credits)
+credits_btn = CTkButton(container, text="Credits", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=to_credits)
 credits_btn.place(relx=0.5, rely=0.7, anchor="center")
 
 
