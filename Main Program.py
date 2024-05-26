@@ -65,10 +65,11 @@ def update_font_style(selected_font):
     apply_font_style()
 
 # Add a flag to track whether radio buttons have been created in the quiz frame
+# Add a flag to track whether radio buttons have been created in the quiz frame
 quiz_radiobuttons_created = False
 
 def apply_font_style():
-    global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame, container, answer_radiobuttons
+    global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame, container, answer_radiobuttons, quiz_radiobuttons_created
 
     def update_widgets_font(widget):
         if isinstance(widget, (CTkLabel, CTkButton, CTkRadioButton)):
@@ -84,10 +85,11 @@ def apply_font_style():
     for frame in frames:
         update_widgets_font(frame)
 
-    # Recreate radio buttons in quiz frame only if they haven't been created yet
-    if quiz_frame.winfo_ismapped() and not quiz_radiobuttons_created:
-        recreate_radiobuttons()
-        quiz_radiobuttons_created = True  # Set the flag to True after creating the radio buttons
+    # Recreate radio buttons in quiz frame only if they haven't been created yet or if the font style has changed
+    if quiz_frame.winfo_ismapped():
+        if not quiz_radiobuttons_created or (global_font_style[0], 15) != answer_radiobuttons[0].cget("font"):
+            recreate_radiobuttons()
+            quiz_radiobuttons_created = True  # Set the flag to True after creating the radio buttons
 
 def recreate_radiobuttons():
     global answer_radiobuttons
@@ -99,11 +101,37 @@ def recreate_radiobuttons():
         radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
         radiobutton.configure(font=global_font_style)  # Apply global font style to radio buttons
         answer_radiobuttons.append(radiobutton)
+        radiobutton.place(relx=placement_map[i][0], rel=placement_map[i][1], anchor="center")
+
+def place_quiz_widgets():
+    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text
+
+    quiz_frame.pack(expand=True, fill=BOTH)
+    toggle_menu_frame.place_forget()
+
+    subject_difficulty_font = (global_font_style[0], 24, "roman", "underline")
+
+    subject_difficulty_label = CTkLabel(quiz_frame, text=subject_difficulty_text, font=subject_difficulty_font)
+    subject_difficulty_label.place(relx=0.2, rely=0.2, anchor="center")
+
+    question_lbl_font = (global_font_style[0], 16)
+
+    question_label = CTkLabel(quiz_frame, text="", font=question_lbl_font)
+    question_label.place(relx=0.5, rely=0.35, anchor="center")
+
+    submit_answer_button = CTkButton(quiz_frame, text="Submit", command=on_submit, state="disabled")
+    submit_answer_button.place(relx=0.5, rely=0.9, anchor="center")
+
+    selection = IntVar()
+    placement_map = [(0.3, 0.5), (0.6, 0.5), (0.3, 0.7), (0.6, 0.7)]
+
+    answer_radiobuttons = []
+    for i in range(4):
+        radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
+        answer_radiobuttons.append(radiobutton)
         radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
 
-
-
-
+    apply_font_style()  # Apply font style after
 
 
 
@@ -265,6 +293,8 @@ def toggle_menu():
         toggle_menu_frame.place_forget()
     else:
         toggle_menu_frame.place(x=10,y=40)
+
+    apply_font_style()
     
 
 toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
@@ -378,37 +408,6 @@ def select_difficulty(subject):
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
     apply_font_style()
-
-def place_quiz_widgets():
-    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text
-
-    quiz_frame.pack(expand=True, fill=BOTH)
-    toggle_menu_frame.place_forget()
-
-    subject_difficulty_font = (global_font_style[0], 24, "roman", "underline")
-
-    subject_difficulty_label = CTkLabel(quiz_frame, text=subject_difficulty_text, font=subject_difficulty_font)
-    subject_difficulty_label.place(relx=0.2, rely=0.2, anchor="center")
-
-    question_lbl_font = (global_font_style[0], 16)
-
-    question_label = CTkLabel(quiz_frame, text="", font=question_lbl_font)
-    question_label.place(relx=0.5, rely=0.35, anchor="center")
-
-    submit_answer_button = CTkButton(quiz_frame, text="Submit", command=on_submit, state="disabled")
-    submit_answer_button.place(relx=0.5, rely=0.9, anchor="center")
-
-    selection = IntVar()
-    placement_map = [(0.3, 0.5), (0.6, 0.5), (0.3, 0.7), (0.6, 0.7)]  # [radiobutton 1] [radiobutton 2]
-                                                                      # [radiobutton 3] [radiobutton 4]
-
-    answer_radiobuttons = []
-    for i in range(4):
-        radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
-        answer_radiobuttons.append(radiobutton)
-        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
-
-    apply_font_style()  # Apply font style after creating quiz frame
 
 
     
