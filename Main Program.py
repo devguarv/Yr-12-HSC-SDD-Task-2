@@ -24,14 +24,13 @@ quiz_frame = CTkFrame(root)
 credits_frame = CTkFrame(root)
 quiz_progress = CTkFrame(root)
 final_score_frame = CTkFrame(root)
-toggle_menu_frame = CTkFrame(root, width=150) #Toggle Menu Frame
-menu_visible = False # Flag that tracks visibility of toggle menu
 global subject_difficulty_text
 subject_difficulty_text = ""
 check_label1 = None
 check_label2 = None
 score = 0 #Tracks Quiz Score
 quiz_restarted = False #Flag variable indicating whether the quiz has been restarted
+
 
 
 #Creating a local file access for the image to be imported
@@ -56,31 +55,176 @@ v2atom_img = CTkImage(atom_img)
 
 root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
+def hide_toggle_menu_frame():
+    global toggle_menu_frame
+    if toggle_menu_frame is not None:
+        toggle_menu_frame.pack_forget()
+
+
+def hide_all_frames_except(frame_to_show):
+    global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame
+    frames = [subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame]
+    for frame in frames:
+        if frame != frame_to_show:
+            frame.pack_forget()
 
 def to_main_frame():
     global subject_frame, difficulty_frame, options_frame
     container.pack(expand=True, fill=BOTH)
+    hide_toggle_button()
+    hide_all_frames_except(subject_frame)
+    hide_check_labels()
 
     if subject_frame is not None: #If the selected frame is not none, although they were defined as none, it means the frame's value has switched and this frame will be temporarily forgotten when switched
         subject_frame.pack_forget()
-        toggle_btn.configure(state="disabled")
+        
     if difficulty_frame is not None:
         difficulty_frame.pack_forget()
-        toggle_btn.configure(state="disabled")
+        
     if options_frame is not None:
         options_frame.pack_forget()
-        toggle_btn.configure(state="disabled")
+        
     if credits_frame is not None:
         credits_frame.pack_forget()
-        toggle_btn.configure(state="disabled")
+    
+    hide_toggle_menu_frame()
+
+def select_options():
+    global options_frame
+    container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
+    show_toggle_button()
+
+    hide_all_frames_except(options_frame)
+
+    options_frame = CTkFrame(root)
+    options_frame.pack(expand=True, fill=BOTH)
+
+    font_style_lbl_settings= ("Arial", 15, UNDERLINE)
+
+    font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
+    font_style_label.place(relx=0.37, rely=0.3)
+
+    font_style_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
+    font_style_options.place(relx=0.5, rely=0.3)
+
+    back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
+    back_btn.place(relx=0.15, rely=0.9, anchor="center")
+
+    #Adjust position of the toggle menu frame to the left
+    toggle_menu_frame.pack(fill=Y, side=LEFT)
+
+    hide_toggle_menu_frame()
+
+def to_credits():
+    global credits_frame
+    #Remove Initial Frame
+    container.pack_forget()
+    show_toggle_button()
+
+    credits_frame = CTkFrame(root)
+    credits_frame.pack(expand=True, fill=BOTH)
+
+    title_font = ("Arial", 24, UNDERLINE)
+    credits_title_lbl = CTkLabel(credits_frame, text="Credits", text_color="Black", font=title_font, anchor="center")
+    credits_title_lbl.place(relx=0.2, rely=0.1)
+
+    status_lbl = CTkLabel(credits_frame, text="Status of Program: Open Source", text_color="Green", anchor="center")
+    status_lbl.place(relx=0.37, rely=0.04)
+
+    job1_lbl = CTkLabel(credits_frame, text="Lead Developer: ", text_color="Black", anchor="center")
+    job1_lbl.place(relx=0.2, rely=0.2)
+
+    job2_lbl = CTkLabel(credits_frame, text="Project Manager: ", text_color="Black", anchor="center")
+    job2_lbl.place(relx=0.2, rely=0.3)
+
+    job3_lbl = CTkLabel(credits_frame, text="UI Designer: ", text_color="Black", anchor="center")
+    job3_lbl.place(relx=0.2, rely=0.4)
+
+    job4_lbl = CTkLabel(credits_frame, text="System Designer: ", text_color="Black", anchor="center")
+    job4_lbl.place(relx=0.2, rely=0.5)
+
+    job5_lbl = CTkLabel(credits_frame, text="Data Analyst: ", text_color="Black", anchor="center")
+    job5_lbl.place(relx=0.2, rely=0.6)
+
+    job6_lbl = CTkLabel(credits_frame, text="Scrum Master: ", text_color="Black", anchor="center")
+    job6_lbl.place(relx=0.2, rely=0.7)
+
+    devprakash_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl.place(relx=0.4, rely=0.2)
+    
+    devprakash1_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash1_lbl.place(relx=0.4, rely=0.3)
+    
+    devprakash2_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash2_lbl.place(relx=0.4, rely=0.4)
+    
+    devprakash_lbl3 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl3.place(relx=0.4, rely=0.5)
+    
+    devprakash_lbl4 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl4.place(relx=0.4, rely=0.6)
+
+    devprakash_lbl5 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl5.place(relx=0.4, rely=0.7)
+
+    back_button = CTkButton(credits_frame, text="Back", width=10, image=v2leftarrow_img, compound="left", text_color="White", command=to_main_frame)
+    back_button.place(relx=0.15, rely=0.9, anchor="center")
+
+    hide_all_frames_except(credits_frame)
+
+    hide_toggle_menu_frame()
+
+def toggle_menu():
+    global toggle_menu_frame
+    if toggle_menu_frame.winfo_ismapped():
+        toggle_menu_frame.pack_forget()
+    else:
+        toggle_menu_frame.pack(fill=Y, side=LEFT)
+
+toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
+
+def create_toggle_menu():
+    global toggle_menu_frame
+    toggle_menu_frame = CTkFrame(root, width=200)
+    toggle_menu_frame.pack_propagate(False)
+
+    menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", font=("Arial", 24))
+    menu_label.pack(pady=10)
+    
+    home_label = CTkButton(toggle_menu_frame, text="Home", command=to_main_frame)
+    home_label.pack(pady=10)
+    
+    options_label = CTkButton(toggle_menu_frame, text="Options", command=select_options)
+    options_label.pack(pady=10)
+
+    credits_label = CTkButton(toggle_menu_frame, text="Credits", command=to_credits)
+    credits_label.pack(pady=10)
+
+    toggle_menu_button.place(x=10, y=10)
+
+create_toggle_menu()
+
+
    
+def show_toggle_button():
+    toggle_menu_button.place(x=10, y=10)
+
+def hide_toggle_button():
+    toggle_menu_button.place_forget()
+
 def to_subject_frame():
     global subject_frame, difficulty_frame, options_frame
     subject_frame.pack(expand=True, fill=BOTH)
+    show_toggle_button()
 
     if difficulty_frame is not None:
         difficulty_frame.pack_forget()
 
+    if options_frame is not None:
+        options_frame.pack_forget()
+
+    hide_toggle_menu_frame()
+    
 def update_font_size():
     pass
 
@@ -89,9 +233,9 @@ def select_subject():
     hide_all_frames() #Hides other frames when swtiched to this frame
     hide_check_labels() #Hides the wrong and right labels from quiz
     container.pack_forget() #Removes main container when switched
-
     subject_frame.pack(expand=True, fill=BOTH)
-    toggle_btn.configure(state="normal") #Enable Toggle Button
+    show_toggle_button() #Show the toggle button when switched to subject frame
+
 
     subject_title_font = ("Arial", 24, UNDERLINE)
 
@@ -115,7 +259,10 @@ def select_difficulty(subject):
     hide_all_frames()
     hide_check_labels()
     difficulty_frame.pack(expand=True, fill=BOTH)
-    toggle_btn.configure(state="normal")
+    show_toggle_button()
+    hide_toggle_menu_frame()
+
+
 
     difficulty_title_font = ("Arial", 24, UNDERLINE)
     difficulty_title = CTkLabel(difficulty_frame, text="2. Select Difficulty", text_color="Black", font=difficulty_title_font)
@@ -178,7 +325,7 @@ def on_submit():
     submit_answer_button.configure(state="disabled")
 
 def hide_all_frames():
-    global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame
+    global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame
     frames = [subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame]
     for frame in frames:
         frame.pack_forget()
@@ -274,6 +421,8 @@ def back_to_subject():
 def start_quiz(subject, difficulty):
     global question_set, subject_difficulty_text
     difficulty_frame.pack_forget()
+    show_toggle_button()
+    hide_toggle_menu_frame()
 
     question_set = [*questions[subject][difficulty]] #Assigns the questions based of subject and difficulty
 
@@ -283,100 +432,7 @@ def start_quiz(subject, difficulty):
 
     reconfigure_question_info(question_set[0]) #Initiliase question info
 
-def select_options():
-    global options_frame
-    container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
 
-    options_frame = CTkFrame(root)
-    options_frame.pack(expand=True, fill=BOTH)
-
-    font_style_lbl_settings= ("Arial", 15, UNDERLINE)
-
-    font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
-    font_style_label.place(relx=0.37, rely=0.3)
-
-    font_style_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
-    font_style_options.place(relx=0.5, rely=0.3)
-
-    back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
-    back_btn.place(relx=0.15, rely=0.9, anchor="center")
-
-def to_credits():
-    global credits_frame
-    #Remove Initial Frame
-    container.pack_forget()
-
-    credits_frame = CTkFrame(root)
-    credits_frame.pack(expand=True, fill=BOTH)
-
-    title_font = ("Arial", 24, UNDERLINE)
-    credits_title_lbl = CTkLabel(credits_frame, text="Credits", text_color="Black", font=title_font, anchor="center")
-    credits_title_lbl.place(relx=0.2, rely=0.1)
-
-    status_lbl = CTkLabel(credits_frame, text="Status of Program: Open Source", text_color="Green", anchor="center")
-    status_lbl.place(relx=0.37, rely=0.04)
-
-    job1_lbl = CTkLabel(credits_frame, text="Lead Developer: ", text_color="Black", anchor="center")
-    job1_lbl.place(relx=0.2, rely=0.2)
-
-    job2_lbl = CTkLabel(credits_frame, text="Project Manager: ", text_color="Black", anchor="center")
-    job2_lbl.place(relx=0.2, rely=0.3)
-
-    job3_lbl = CTkLabel(credits_frame, text="UI Designer: ", text_color="Black", anchor="center")
-    job3_lbl.place(relx=0.2, rely=0.4)
-
-    job4_lbl = CTkLabel(credits_frame, text="System Designer: ", text_color="Black", anchor="center")
-    job4_lbl.place(relx=0.2, rely=0.5)
-
-    job5_lbl = CTkLabel(credits_frame, text="Data Analyst: ", text_color="Black", anchor="center")
-    job5_lbl.place(relx=0.2, rely=0.6)
-
-    job6_lbl = CTkLabel(credits_frame, text="Scrum Master: ", text_color="Black", anchor="center")
-    job6_lbl.place(relx=0.2, rely=0.7)
-
-    devprakash_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
-    devprakash_lbl.place(relx=0.4, rely=0.2)
-    
-    devprakash1_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
-    devprakash1_lbl.place(relx=0.4, rely=0.3)
-    
-    devprakash2_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
-    devprakash2_lbl.place(relx=0.4, rely=0.4)
-    
-    devprakash_lbl3 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
-    devprakash_lbl3.place(relx=0.4, rely=0.5)
-    
-    devprakash_lbl4 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
-    devprakash_lbl4.place(relx=0.4, rely=0.6)
-
-    devprakash_lbl5 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
-    devprakash_lbl5.place(relx=0.4, rely=0.7)
-
-    back_button = CTkButton(credits_frame, text="Back", width=10, image=v2leftarrow_img, compound="left", text_color="White", command=to_main_frame)
-    back_button.place(relx=0.15, rely=0.9, anchor="center")
-
-
-def toggle_menu():
-    global menu_visible
-    if menu_visible:
-        toggle_menu_frame.pack_forget()
-    else:
-        toggle_menu_frame.pack(expand=False, fill=Y, side=LEFT)
-    menu_visible = not menu_visible
-
-def create_toggle_menu():
-    global toggle_menu_frame
-    toggle_menu_frame.pack(expand=False, fill=Y, side=LEFT)
-
-    toggle_font = ("Arial", 14)
-    main_menu_btn = CTkButton(toggle_menu_frame, text="Main Menu", text_color="Black", font=toggle_font, command=to_main_frame)
-    main_menu_btn.pack(pady=10)
-
-    options_btn = CTkButton(toggle_menu_frame, text="Options", text_color="Black", font=toggle_font, command=select_options)
-    options_btn.pack(pady=10)
-
-    credits_btn = CTkButton(toggle_menu_frame, text="Credits", text_color="Black", font=toggle_font, command=to_credits)
-    credits_btn.pack(pady=10)
 
 container = CTkFrame(root) #To store the main widgets for simplicity
 container.pack(expand=True, fill=BOTH)
@@ -397,12 +453,6 @@ options_btn.place(relx=0.5, rely=0.6, anchor="center")
 #Creating the credits button
 credits_btn = CTkButton(container, text="Credits", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=to_credits)
 credits_btn.place(relx=0.5, rely=0.7, anchor="center")
-
-#Toggle Button Menu
-toggle_btn = CTkButton(root, text="Menu", command=toggle_menu)
-toggle_btn.place(relx=0.01, rely=0.01, anchor="nw")
-toggle_btn.configure(state="disabled")
-
 
 
 
