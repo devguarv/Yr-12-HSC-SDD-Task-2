@@ -75,23 +75,38 @@ def to_main_frame():
     hide_all_frames_except(subject_frame)
     hide_check_labels()
 
-    if subject_frame is not None: #If the selected frame is not none, although they were defined as none, it means the frame's value has switched and this frame will be temporarily forgotten when switched
+    if subject_frame is not None:
         subject_frame.pack_forget()
-        
+
     if difficulty_frame is not None:
         difficulty_frame.pack_forget()
-        
+
     if options_frame is not None:
         options_frame.pack_forget()
-        
+
     if credits_frame is not None:
         credits_frame.pack_forget()
-    
+
     hide_toggle_menu_frame()
+    toggle_menu_button.configure(text="☰")  # Reset the toggle button text
+
+def to_subject_frame():
+    global subject_frame, difficulty_frame, options_frame
+    subject_frame.pack(expand=True, fill=BOTH)
+    show_toggle_button()
+
+    if difficulty_frame is not None:
+        difficulty_frame.pack_forget()
+
+    if options_frame is not None:
+        options_frame.pack_forget()
+
+    hide_toggle_menu_frame()
+    toggle_menu_button.configure(text="☰")  # Reset the toggle button text
 
 def select_options():
     global options_frame
-    container.pack_forget() #Removes the main container that holds the 3 options = Begin, Options, Credits
+    container.pack_forget()  # Removes the main container that holds the 3 options = Begin, Options, Credits
     show_toggle_button()
 
     hide_all_frames_except(options_frame)
@@ -99,7 +114,11 @@ def select_options():
     options_frame = CTkFrame(root)
     options_frame.pack(expand=True, fill=BOTH)
 
-    font_style_lbl_settings= ("Arial", 15, UNDERLINE)
+    font_style_lbl_settings = ("Arial", 15, UNDERLINE)
+    options_title_lbl_settings = ("Arial", 24, UNDERLINE)
+
+    options_lb = CTkLabel(options_frame, text="Options", text_color="Black", font=options_title_lbl_settings)
+    options_lb.place(relx=0.3, rely=0.2)
 
     font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
     font_style_label.place(relx=0.37, rely=0.3)
@@ -107,17 +126,23 @@ def select_options():
     font_style_options = CTkComboBox(options_frame, values=["Arial", "Times New Roman"], command=update_font_size)
     font_style_options.place(relx=0.5, rely=0.3)
 
-    back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
+    back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img,
+                         compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
-    #Adjust position of the toggle menu frame to the left
+    # Adjust position of the toggle menu frame to the left
     toggle_menu_frame.pack(fill=Y, side=LEFT)
 
     hide_toggle_menu_frame()
+    toggle_menu_button.configure(text="☰")  # Reset the toggle button text
 
 def to_credits():
-    global credits_frame
-    #Remove Initial Frame
+    global credits_frame, quiz_frame
+    # Remove Initial Frame
+
+    if quiz_frame.winfo_ismapped():
+        quiz_frame.pack_forget()
+
     container.pack_forget()
     show_toggle_button()
 
@@ -151,42 +176,41 @@ def to_credits():
 
     devprakash_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
     devprakash_lbl.place(relx=0.4, rely=0.2)
-    
+
     devprakash1_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
     devprakash1_lbl.place(relx=0.4, rely=0.3)
-    
+
     devprakash2_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
     devprakash2_lbl.place(relx=0.4, rely=0.4)
-    
+
     devprakash_lbl3 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
     devprakash_lbl3.place(relx=0.4, rely=0.5)
-    
+
     devprakash_lbl4 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
     devprakash_lbl4.place(relx=0.4, rely=0.6)
 
     devprakash_lbl5 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
     devprakash_lbl5.place(relx=0.4, rely=0.7)
 
-    back_button = CTkButton(credits_frame, text="Back", width=10, image=v2leftarrow_img, compound="left", text_color="White", command=to_main_frame)
+    back_button = CTkButton(credits_frame, text="Back", width=10, image=v2leftarrow_img, compound="left",
+                             text_color="White", command=to_main_frame)
     back_button.place(relx=0.15, rely=0.9, anchor="center")
 
-    hide_all_frames_except(credits_frame)
-
-    hide_toggle_menu_frame()
-
 def toggle_menu():
-    global toggle_menu_frame
+    global toggle_menu_frame, toggle_menu_button
+
     if toggle_menu_frame.winfo_ismapped():
-        toggle_menu_frame.pack_forget()
+        toggle_menu_frame.place_forget()
     else:
-        toggle_menu_frame.pack(fill=Y, side=LEFT)
+        toggle_menu_frame.place(x=toggle_menu_button.winfo_rootx(), y=toggle_menu_button.winfo_rooty() + toggle_menu_button.winfo_height() + 5)
+    
 
 toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
 
 def create_toggle_menu():
     global toggle_menu_frame
     toggle_menu_frame = CTkFrame(root, width=200)
-    toggle_menu_frame.pack_propagate(False)
+    
 
     menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", font=("Arial", 24))
     menu_label.pack(pady=10)
@@ -210,7 +234,10 @@ def show_toggle_button():
     toggle_menu_button.place(x=10, y=10)
 
 def hide_toggle_button():
-    toggle_menu_button.place_forget()
+    global toggle_menu_frame
+    if toggle_menu_frame is not None:
+        toggle_menu_frame.place_forget()
+  
 
 def to_subject_frame():
     global subject_frame, difficulty_frame, options_frame
@@ -224,6 +251,7 @@ def to_subject_frame():
         options_frame.pack_forget()
 
     hide_toggle_menu_frame()
+    toggle_menu_button.configure(text="☰")
     
 def update_font_size():
     pass
@@ -242,25 +270,27 @@ def select_subject():
     subject_title = CTkLabel(subject_frame, text="1. Select Subject", text_color="Black", font=subject_title_font)
     subject_title.place(relx=0.5, rely=0.35, anchor="center")
     
-    phys_btn = CTkButton(subject_frame, text="Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Physics"))
+    phys_btn = CTkButton(subject_frame, text="⚫ Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Physics"))
     phys_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    chem_btn = CTkButton(subject_frame, text="Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Chemistry"))
+    chem_btn = CTkButton(subject_frame, text="⚫ Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Chemistry"))
     chem_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    bio_btn = CTkButton(subject_frame, text="Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Biology"))
+    bio_btn = CTkButton(subject_frame, text="⚫ Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Biology"))
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
     back_btn = CTkButton(subject_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
 def select_difficulty(subject):
-    global difficulty_frame
-    hide_all_frames()
+    global difficulty_frame, toggle_menu_button
+    hide_all_frames_except(difficulty_frame)
     hide_check_labels()
     difficulty_frame.pack(expand=True, fill=BOTH)
     show_toggle_button()
     hide_toggle_menu_frame()
+
+    toggle_menu_frame.place_forget()
 
 
 
@@ -268,13 +298,13 @@ def select_difficulty(subject):
     difficulty_title = CTkLabel(difficulty_frame, text="2. Select Difficulty", text_color="Black", font=difficulty_title_font)
     difficulty_title.place(relx=0.5, rely=0.35, anchor="center")
 
-    easy_btn = CTkButton(difficulty_frame, text="Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = lambda: start_quiz(subject, "Easy"))
+    easy_btn = CTkButton(difficulty_frame, text="⚫ Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = lambda: start_quiz(subject, "Easy"))
     easy_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    med_btn = CTkButton(difficulty_frame, text="Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Medium"))
+    med_btn = CTkButton(difficulty_frame, text="⚫ Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Medium"))
     med_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    hard_btn = CTkButton(difficulty_frame, text="Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Hard"))
+    hard_btn = CTkButton(difficulty_frame, text="⚫ Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Hard"))
     hard_btn.place(relx=0.5, rely=0.7, anchor="center")
 
     back_btn = CTkButton(difficulty_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_subject_frame)
@@ -285,6 +315,8 @@ def place_quiz_widgets():
     global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text
 
     quiz_frame.pack(expand=True, fill=BOTH)
+
+    toggle_menu_frame.place_forget()
 
     subject_difficulty_font = CTkFont(family="Arial", size=24, weight="normal", slant="roman", underline=True)
 
@@ -351,7 +383,6 @@ def check_answer(qset):
         check_label1.configure(text="Right ✓")
         check_label1.place(relx=0.75, rely=0.5)
         check_label2.place_forget()
-
         
     else:
         check_label2.configure(text="Wrong ✗")
@@ -359,8 +390,7 @@ def check_answer(qset):
         check_label1.place_forget()
     
     
-    #check_label1.configure(text="")
-    #check_label2.configure(text="")
+
 
 def reconfigure_question_info(qset):
 
