@@ -32,7 +32,7 @@ score = 0 #Tracks Quiz Score
 quiz_restarted = False #Flag variable indicating whether the quiz has been restarted
 # Global Font Style Variable
 global_font_style = ("Arial", 15)
-
+font_size_var = StringVar(value="12")
 container = CTkFrame(root) #To store the main widgets for simplicity
 container.pack(expand=True, fill=BOTH)
 
@@ -59,23 +59,33 @@ v2atom_img = CTkImage(atom_img)
 
 root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
+def update_title_font_size():
+    global title_label, global_font_style
+    selected_font_size = int(font_size_var.get())
+    title_font = (global_font_style[0], selected_font_size + 12)
+    title_label.config(font=title_font)
+
 def update_font_style(selected_font):
     global global_font_style
     global_font_style = (selected_font, 15)
     apply_font_style()
 
 # Add a flag to track whether radio buttons have been created in the quiz frame
-# Add a flag to track whether radio buttons have been created in the quiz frame
 quiz_radiobuttons_created = False
 
 def apply_font_style():
-    global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame, container, answer_radiobuttons, quiz_radiobuttons_created
+    global global_font_style, subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame, container, answer_radiobuttons, quiz_radiobuttons_created
+
+    selected_font_size = int(font_size_var.get())
+    global_font_style = (global_font_style[0], selected_font_size)
 
     def update_widgets_font(widget):
         if isinstance(widget, (CTkLabel, CTkButton, CTkRadioButton)):
             current_font = widget.cget("font")
             if "24" in str(current_font):
-                widget.configure(font=(global_font_style[0], 24))  # Keep heading size 24
+                widget.configure(font=(global_font_style[0], selected_font_size + 12))  # Keep heading size incrementally
+            elif "16" in str(current_font):
+                widget.configure(font=(global_font_style[0], selected_font_size + 4))   # Adjust Question Label size incrementally
             else:
                 widget.configure(font=global_font_style)
         for child in widget.winfo_children():
@@ -87,7 +97,7 @@ def apply_font_style():
 
     # Recreate radio buttons in quiz frame only if they haven't been created yet or if the font style has changed
     if quiz_frame.winfo_ismapped():
-        if not quiz_radiobuttons_created or (global_font_style[0], 15) != answer_radiobuttons[0].cget("font"):
+        if not quiz_radiobuttons_created or (global_font_style[0], selected_font_size) != answer_radiobuttons[0].cget("font"):
             recreate_radiobuttons()
             quiz_radiobuttons_created = True  # Set the flag to True after creating the radio buttons
 
@@ -101,20 +111,22 @@ def recreate_radiobuttons():
         radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
         radiobutton.configure(font=global_font_style)  # Apply global font style to radio buttons
         answer_radiobuttons.append(radiobutton)
-        radiobutton.place(relx=placement_map[i][0], rel=placement_map[i][1], anchor="center")
+        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")  # Change 
 
 def place_quiz_widgets():
-    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text
+    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text, selected_font_size
 
     quiz_frame.pack(expand=True, fill=BOTH)
     toggle_menu_frame.place_forget()
 
-    subject_difficulty_font = (global_font_style[0], 24, "roman", "underline")
+    selected_font_size = int(font_size_var.get())
+
+    subject_difficulty_font = (global_font_style[0], selected_font_size + 12, "roman", "underline")
 
     subject_difficulty_label = CTkLabel(quiz_frame, text=subject_difficulty_text, font=subject_difficulty_font)
     subject_difficulty_label.place(relx=0.2, rely=0.2, anchor="center")
 
-    question_lbl_font = (global_font_style[0], 16)
+    question_lbl_font = (global_font_style[0], selected_font_size + 4)
 
     question_label = CTkLabel(quiz_frame, text="", font=question_lbl_font)
     question_label.place(relx=0.5, rely=0.35, anchor="center")
@@ -128,11 +140,15 @@ def place_quiz_widgets():
     answer_radiobuttons = []
     for i in range(4):
         radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
+        radiobutton.configure(font=global_font_style)  # Apply global font style to radio buttons
         answer_radiobuttons.append(radiobutton)
         radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
 
     apply_font_style()  # Apply font style after
 
+
+def on_font_size_change(event):
+    apply_font_style()
 
 
 def hide_toggle_menu_frame():
@@ -206,6 +222,17 @@ def select_options():
     font_style_options = CTkComboBox(options_frame, values=["Arial", "Calibri", "Times New Roman"], command=update_font_style)
     font_style_options.place(relx=0.5, rely=0.3)
 
+    font_size_label = CTkLabel(options_frame, text="Font Size:", font=font_style_lbl_settings, text_color="Black")
+    font_size_label.place(relx=0.37, rely=0.4)
+
+    font_size_options = CTkComboBox(options_frame, variable=font_size_var, values=["12", "14", "16", "18"])
+    font_size_options.place(relx=0.62, rely=0.42, anchor="center")
+
+    # Bind the font size option change directly to update_font_size function
+    font_size_options.bind("<<ComboboxSelected>>", lambda event: update_font_size())
+
+    font_size_options.bind("<<ComboboxSelected>>", lambda event: update_title_font_size())
+
     back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
@@ -216,6 +243,7 @@ def select_options():
     toggle_menu_button.configure(text="☰")  # Reset the toggle button text
 
     apply_font_style()  # Apply font style after creating options frame
+
 
 
 
@@ -287,14 +315,13 @@ def to_credits():
     apply_font_style()
 
 def toggle_menu():
-    global toggle_menu_frame, toggle_menu_button
+    global toggle_menu_frame
 
     if toggle_menu_frame.winfo_ismapped():
         toggle_menu_frame.place_forget()
     else:
         toggle_menu_frame.place(x=10,y=40)
 
-    apply_font_style()
     
 
 toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
@@ -349,7 +376,10 @@ def to_subject_frame():
     apply_font_style()
     
 def update_font_size():
-    pass
+    global global_font_style
+    selected_font_size = int(font_size_var.get())
+    global_font_style (global_font_style[0], selected_font_size)
+    apply_font_style()
 
 def select_subject():
     global subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame
@@ -459,8 +489,6 @@ def check_answer(qset):
         check_label2.place(relx=0.75, rely=0.5)
         check_label1.place_forget()
     
-    
-
 
 def reconfigure_question_info(qset):
 
