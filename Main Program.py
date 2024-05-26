@@ -142,6 +142,10 @@ def to_credits():
 
     if quiz_frame.winfo_ismapped():
         quiz_frame.pack_forget()
+    if subject_frame.winfo_ismapped():
+        subject_frame.pack_forget()
+    if difficulty_frame.winfo_ismapped():
+        difficulty_frame.pack_forget()
 
     container.pack_forget()
     show_toggle_button()
@@ -202,26 +206,26 @@ def toggle_menu():
     if toggle_menu_frame.winfo_ismapped():
         toggle_menu_frame.place_forget()
     else:
-        toggle_menu_frame.place(x=toggle_menu_button.winfo_rootx(), y=toggle_menu_button.winfo_rooty() + toggle_menu_button.winfo_height() + 5)
+        toggle_menu_frame.place(x=10,y=40)
     
 
 toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
 
 def create_toggle_menu():
     global toggle_menu_frame
-    toggle_menu_frame = CTkFrame(root, width=200)
+    toggle_menu_frame = CTkFrame(root, width=200, fg_color="Gray")
     
 
-    menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", font=("Arial", 24))
+    menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", text_color="White", font=("Arial", 24))
     menu_label.pack(pady=10)
     
-    home_label = CTkButton(toggle_menu_frame, text="Home", command=to_main_frame)
+    home_label = CTkButton(toggle_menu_frame, text="Home",  command=to_main_frame)
     home_label.pack(pady=10)
     
-    options_label = CTkButton(toggle_menu_frame, text="Options", command=select_options)
+    options_label = CTkButton(toggle_menu_frame, text="Options",command=select_options)
     options_label.pack(pady=10)
 
-    credits_label = CTkButton(toggle_menu_frame, text="Credits", command=to_credits)
+    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=to_credits)
     credits_label.pack(pady=10)
 
     toggle_menu_button.place(x=10, y=10)
@@ -326,7 +330,7 @@ def place_quiz_widgets():
     question_lbl_font = CTkFont(family="Arial", size=16, weight="normal", underline=TRUE)
 
     question_label = CTkLabel(quiz_frame, text="", font=question_lbl_font)
-    question_label.place(relx=0.3, rely=0.35, anchor="center")
+    question_label.place(relx=0.5, rely=0.35, anchor="center")
 
     submit_answer_button = CTkButton(quiz_frame, text="Submit", command=on_submit, state="disabled")
     submit_answer_button.place(relx=0.5, rely=0.9, anchor="center")
