@@ -95,12 +95,7 @@ def apply_font_style():
     for frame in frames:
         update_widgets_font(frame)
 
-    # Recreate radio buttons in quiz frame only if they haven't been created yet or if the font style has changed
-    if quiz_frame.winfo_ismapped():
-        if not quiz_radiobuttons_created or (global_font_style[0], selected_font_size) != answer_radiobuttons[0].cget("font"):
-            recreate_radiobuttons()
-            quiz_radiobuttons_created = True  # Set the flag to True after creating the radio buttons
-
+# Adjusted recreate_radiobuttons function
 def recreate_radiobuttons():
     global answer_radiobuttons
     for radiobutton in answer_radiobuttons:
@@ -111,8 +106,11 @@ def recreate_radiobuttons():
         radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
         radiobutton.configure(font=global_font_style)  # Apply global font style to radio buttons
         answer_radiobuttons.append(radiobutton)
-        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")  # Change 
+        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")  
 
+# Ensure apply_font_style is called appropriately
+def on_font_size_change(event):
+    apply_font_style()
 def place_quiz_widgets():
     global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text, selected_font_size
 
@@ -145,10 +143,6 @@ def place_quiz_widgets():
         radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
 
     apply_font_style()  # Apply font style after
-
-
-def on_font_size_change(event):
-    apply_font_style()
 
 
 def hide_toggle_menu_frame():
@@ -244,10 +238,6 @@ def select_options():
 
     apply_font_style()  # Apply font style after creating options frame
 
-
-
-
-
 def to_credits():
     global credits_frame, quiz_frame
     # Remove Initial Frame
@@ -322,8 +312,6 @@ def toggle_menu():
     else:
         toggle_menu_frame.place(x=10,y=40)
 
-    
-
 toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
 
 def create_toggle_menu():
@@ -347,8 +335,6 @@ def create_toggle_menu():
     apply_font_style()
 
 create_toggle_menu()
-
-
    
 def show_toggle_button():
     toggle_menu_button.place(x=10, y=10)
@@ -408,7 +394,6 @@ def select_subject():
 
     apply_font_style()  # Apply font style after creating subject frame
 
-
 def select_difficulty(subject):
     global difficulty_frame, toggle_menu_button
     hide_all_frames_except(difficulty_frame)
@@ -439,8 +424,7 @@ def select_difficulty(subject):
 
     apply_font_style()
 
-
-    
+  
 def on_submit():
     global score
     qset = question_set[0]
@@ -498,6 +482,8 @@ def reconfigure_question_info(qset):
     for i, button in enumerate(answer_radiobuttons):
         button.configure(text=qset[1][i])
     selection.set(-1) #Removes the user radiobutton selection
+
+    apply_font_style()
 
 def next_question(qset):
     #Deletes the current question and returns the qset array
