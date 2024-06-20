@@ -13,6 +13,8 @@ root.title("Trifecta Quest")
 default_geometry_x = 600
 default_geometry_y = 500
 
+root.minsize(width=default_geometry_x, height=default_geometry_y)
+
 #Initialising the appearance theme for the program
 set_appearance_mode("light")
 
@@ -56,8 +58,6 @@ v2arrow_img = CTkImage(arrow_img)
 v2leftarrow_img = CTkImage(left_arrow_img)
 v2atom_img = CTkImage(atom_img)
 
-
-root.geometry("{width}x{height}".format(width=default_geometry_x, height=default_geometry_y))
 
 def update_title_font_size():
     global title_label, global_font_style
