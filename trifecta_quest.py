@@ -38,6 +38,9 @@ font_size_var = StringVar(value="12")
 container = CTkFrame(root) #To store the main widgets for simplicity
 container.pack(expand=True, fill=BOTH)
 
+global_font_family = "Arial"
+global_font_size = 12
+
 
 #Creating a local file access for the image to be imported
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
@@ -58,6 +61,39 @@ v2arrow_img = CTkImage(arrow_img)
 v2leftarrow_img = CTkImage(left_arrow_img)
 v2atom_img = CTkImage(atom_img)
 
+def apply_theme(theme):
+    themes = {
+        "Light": "#FFFFFF",
+        "Dark" : "#2E2E2E",
+        "Blue" : "#87CEEB"
+    }
+    root.configure(bg=themes[theme])
+    options_frame.configure(bg=themes[theme])
+
+def create_theme_combobox():
+    theme_var = StringVar()
+    theme_combobox = CTkComboBox(options_frame, values=["Light","Dark","Blue"], variable=theme_var, command=apply_theme)
+    theme_combobox.place(relx=0.5, rely=0.8)
+
+def update_font_size_combobox(event=None):
+    global global_font_style
+    selected_font_size = int(font_size_var.get())
+    global_font_style = (global_font_style[0], selected_font_size)
+    apply_font_style()
+    
+def apply_font_style():
+    def update_widget_font(widget):
+        if isinstance(widget, (CTkLabel, CTkButton, CTkRadioButton, CTkComboBox)):
+            widget.configure(font=global_font_style)
+            widget.update()
+        for child in widget.winfo_children():
+            update_widget_font(child)
+    update_widget_font(root)
+
+def make_buttons_bigger():
+    main_buttons = [begin_btn, options_btn, credits_btn]
+    for button in main_buttons:
+        button.configure(font=(global_font_style[0], global_font_style[1] + 8))
 
 def update_title_font_size():
     global title_label, global_font_style
@@ -65,41 +101,14 @@ def update_title_font_size():
     title_font = (global_font_style[0], selected_font_size + 12)
     title_label.config(font=title_font)
 
-def update_font_style(selected_font):
-    global global_font_style
-    global_font_style = (selected_font, 15)
-    apply_font_style()
-
-# Add a flag to track whether radio buttons have been created in the quiz frame
 quiz_radiobuttons_created = False
 
-def apply_font_style():
-    global global_font_style, subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame, container, answer_radiobuttons, quiz_radiobuttons_created
-
-    selected_font_size = int(font_size_var.get())
-    global_font_style = (global_font_style[0], selected_font_size)
-
-    def update_widgets_font(widget):
-        if isinstance(widget, (CTkLabel, CTkButton, CTkRadioButton)):
-            current_font = widget.cget("font")
-            if "24" in str(current_font):
-                widget.configure(font=(global_font_style[0], selected_font_size + 12))  # Keep heading size incrementally
-            elif "16" in str(current_font):
-                widget.configure(font=(global_font_style[0], selected_font_size + 4))   # Adjust Question Label size incrementally
-            else:
-                widget.configure(font=global_font_style)
-        for child in widget.winfo_children():
-            update_widgets_font(child)
-
-    frames = [subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, toggle_menu_frame, container]
-    for frame in frames:
-        update_widgets_font(frame)
 
 # Adjusted recreate_radiobuttons function
 def recreate_radiobuttons():
     global answer_radiobuttons
     for radiobutton in answer_radiobuttons:
-        radiobutton.destroy()
+        radiobutton.place_forget()
     answer_radiobuttons = []
     placement_map = [(0.3, 0.5), (0.6, 0.5), (0.3, 0.7), (0.6, 0.7)]
     for i in range(4):
@@ -108,9 +117,9 @@ def recreate_radiobuttons():
         answer_radiobuttons.append(radiobutton)
         radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")  
 
-# Ensure apply_font_style is called appropriately
-def on_font_size_change(event):
-    apply_font_style()
+
+
+
 def place_quiz_widgets():
     global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text, selected_font_size
 
@@ -213,17 +222,17 @@ def select_options():
     font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
     font_style_label.place(relx=0.37, rely=0.3)
 
-    font_style_options = CTkComboBox(options_frame, values=["Arial", "Calibri", "Times New Roman"], command=update_font_style)
+    font_style_options = CTkComboBox(options_frame, values=["Arial", "Calibri", "Times New Roman"], command=update_font_size_combobox)
     font_style_options.place(relx=0.5, rely=0.3)
 
-    font_size_label = CTkLabel(options_frame, text="Font Size:", font=font_style_lbl_settings, text_color="Black")
+    font_size_label = CTkLabel(options_frame, text="Font Size:")
     font_size_label.place(relx=0.37, rely=0.4)
 
-    font_size_options = CTkComboBox(options_frame, variable=font_size_var, values=["12", "14", "16", "18"])
+    font_size_options = CTkComboBox(options_frame, values=[str(i) for i in range(8, 33, 2)], variable=font_size_var)
     font_size_options.place(relx=0.62, rely=0.42, anchor="center")
 
     # Bind the font size option change directly to update_font_size function
-    font_size_options.bind("<<ComboboxSelected>>", lambda event: update_font_size())
+    font_size_options.bind("<<ComboboxSelected>>", update_font_size_combobox)
 
     font_size_options.bind("<<ComboboxSelected>>", lambda event: update_title_font_size())
 
