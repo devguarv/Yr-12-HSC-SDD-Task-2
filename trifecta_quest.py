@@ -76,10 +76,11 @@ def apply_theme(theme):
 
 
 def update_font_size_combobox(event=None):
-    global global_font_style
+    global global_font_style, global_font_family
     selected_font_family = font_style_options.get()
     selected_font_size = int(font_size_var.get())
-    global_font_style = (selected_font_family, selected_font_size)
+    global_font_family = selected_font_family
+    global_font_style = (global_font_family, selected_font_size)
     apply_font_style()
     update_title_font_size()
     
@@ -101,7 +102,7 @@ def update_title_font_size():
     global title_label, global_font_style
     selected_font_size = int(font_size_var.get())
     title_font = (global_font_style[0], selected_font_size + 12)
-    title_label.config(font=title_font)
+    title_label.configure(font=title_font)
 
 quiz_radiobuttons_created = False
 
@@ -232,7 +233,7 @@ def select_options():
     font_size_label = CTkLabel(options_frame, text="Font Size:")
     font_size_label.place(relx=0.37, rely=0.4)
 
-    font_size_options = CTkComboBox(options_frame, values=[str(i) for i in range(8, 33, 2)], variable=font_size_var)
+    font_size_options = CTkComboBox(options_frame, values=[str(i) for i in range(8, 21, 2)], variable=font_size_var)
     font_size_options.place(relx=0.62, rely=0.42, anchor="center")
 
     theme_label = CTkLabel(options_frame, text="Theme:")
@@ -341,13 +342,13 @@ def create_toggle_menu():
     menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", text_color="White", font=("Arial", 24))
     menu_label.pack(pady=10)
     
-    home_label = CTkButton(toggle_menu_frame, text="Home",  command=lambda: (to_main_frame(), recreate_radiobuttons()))
+    home_label = CTkButton(toggle_menu_frame, text="Home",  command=lambda: (to_main_frame(), recreate_radiobuttons())) #User goes to main frame, and radiobuttons and q label is cleared
     home_label.pack(pady=10)
     
-    options_label = CTkButton(toggle_menu_frame, text="Options",command=select_options)
+    options_label = CTkButton(toggle_menu_frame, text="Options",command=lambda: (select_options(),recreate_radiobuttons()))
     options_label.pack(pady=10)
 
-    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=to_credits)
+    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=lambda: (to_credits, recreate_radiobuttons()))
     credits_label.pack(pady=10)
 
     toggle_menu_button.place(x=10, y=10)
@@ -364,22 +365,7 @@ def hide_toggle_button():
         toggle_menu_frame.place_forget()
   
 
-def to_subject_frame():
-    global subject_frame, difficulty_frame, options_frame
-    subject_frame.pack(expand=True, fill=BOTH)
-    show_toggle_button()
 
-    if difficulty_frame is not None:
-        difficulty_frame.pack_forget()
-
-    if options_frame is not None:
-        options_frame.pack_forget()
-
-    hide_toggle_menu_frame()
-    toggle_menu_button.configure(text="☰")
-
-    apply_font_style()
-    
 def update_font_size():
     global global_font_style
     selected_font_size = int(font_size_var.get())
@@ -533,7 +519,7 @@ def show_final_score():
     final_score_label = CTkLabel(final_score_frame, text=f"Your final score is: {score}/20", font=("Arial", 24))
     final_score_label.place(relx=0.5, rely=0.5, anchor="center")
 
-    back_to_subject_btn = CTkButton(final_score_frame, text="Back To Subject", image=v2leftarrow_img, compound="left", command=back_to_subject)
+    back_to_subject_btn = CTkButton(final_score_frame, text="Back To Subject", image=v2leftarrow_img, compound="left", command=lambda:(back_to_subject(), recreate_radiobuttons()))
     back_to_subject_btn.place(relx=0.5, rely=0.7)
 
     apply_font_style()
