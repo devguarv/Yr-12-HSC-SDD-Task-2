@@ -84,14 +84,22 @@ def update_font_size_combobox(event=None):
     apply_font_style()
     update_title_font_size()
     
-def apply_font_style():
+def apply_font_style(font_family=None, font_size=None):
+    if font_family:
+        global_font_family = font_family
+    if font_size:
+        global_font_size = font_size
+    for widget in container.winfo_children():
+        widget.configure()
+
+'''def apply_font_style():
     def update_widget_font(widget):
         if isinstance(widget, (CTkLabel, CTkButton, CTkRadioButton, CTkComboBox)):
             widget.configure(font=global_font_style)
             widget.update()
         for child in widget.winfo_children():
             update_widget_font(child)
-    update_widget_font(root)
+    update_widget_font(root)'''
 
 def make_buttons_bigger():
     main_buttons = [begin_btn, options_btn, credits_btn]
@@ -227,25 +235,25 @@ def select_options():
     font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
     font_style_label.place(relx=0.37, rely=0.3)
 
-    font_style_options = CTkComboBox(options_frame, values=["Arial", "Calibri", "Times New Roman"], command=update_font_size_combobox)
+    font_style_options = CTkOptionMenu(options_frame, values=["Arial", "Calibri", "Times New Roman"], command=update_font_size_combobox)
     font_style_options.place(relx=0.5, rely=0.3)
 
     font_size_label = CTkLabel(options_frame, text="Font Size:")
     font_size_label.place(relx=0.37, rely=0.4)
 
-    font_size_options = CTkComboBox(options_frame, values=[str(i) for i in range(8, 21, 2)], variable=font_size_var)
+    font_size_options = CTkOptionMenu(options_frame, values=[str(i) for i in range(8, 21, 2)], variable=font_size_var)
     font_size_options.place(relx=0.62, rely=0.42, anchor="center")
 
     theme_label = CTkLabel(options_frame, text="Theme:")
     theme_label.place(relx=0.37, rely=0.5)
 
-    theme_options = CTkComboBox(options_frame, values=["Light","Dark","Blue"], command=apply_theme)
+    theme_options = CTkOptionMenu(options_frame, values=["Light","Dark","Blue"], command=apply_theme)
     theme_options.place(relx=0.5, rely=0.5)
 
     # Bind the font size option change directly to update_font_size function
-    font_size_options.bind("<<ComboboxSelected>>", update_font_size_combobox)
+    font_size_options.bind("<<OptionMenuSelected>>", update_font_size_combobox)
 
-    font_size_options.bind("<<ComboboxSelected>>", lambda event: update_title_font_size())
+    font_size_options.bind("<<OptionMenuSelected>>", lambda event: update_title_font_size())
 
     back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
