@@ -41,6 +41,9 @@ container.pack(expand=True, fill=BOTH)
 global_font_family = "Arial"
 global_font_size = 12
 
+answer_radiobuttons = []
+selection = IntVar
+
 
 #Creating a local file access for the image to be imported
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
@@ -68,18 +71,17 @@ def apply_theme(theme):
         "Blue" : "#87CEEB"
     }
     root.configure(bg=themes[theme])
-    options_frame.configure(bg=themes[theme])
+    for frame in [subject_frame, difficulty_frame, options_frame, quiz_frame, credits_frame, final_score_frame, quiz_progress, container, toggle_menu_frame]:
+        frame.configure(bg=themes[theme])
 
-def create_theme_combobox():
-    theme_var = StringVar()
-    theme_combobox = CTkComboBox(options_frame, values=["Light","Dark","Blue"], variable=theme_var, command=apply_theme)
-    theme_combobox.place(relx=0.5, rely=0.8)
 
 def update_font_size_combobox(event=None):
     global global_font_style
+    selected_font_family = font_style_options.get()
     selected_font_size = int(font_size_var.get())
-    global_font_style = (global_font_style[0], selected_font_size)
+    global_font_style = (selected_font_family, selected_font_size)
     apply_font_style()
+    update_title_font_size()
     
 def apply_font_style():
     def update_widget_font(widget):
@@ -103,19 +105,20 @@ def update_title_font_size():
 
 quiz_radiobuttons_created = False
 
-
-# Adjusted recreate_radiobuttons function
+# Allows for the recreation of radiobuttons after quiz has been completed / user selects a different frame
 def recreate_radiobuttons():
-    global answer_radiobuttons
-    for radiobutton in answer_radiobuttons:
-        radiobutton.place_forget()
-    answer_radiobuttons = []
+    global answer_radiobuttons, selection
+    for radiobutton in answer_radiobuttons: 
+        radiobutton.destroy()
+        question_label.configure(text="") #Clears the question label, so it does not overlap
+    answer_radiobuttons.clear() #Clears previous radiobutton options, so it is not saved
+
     placement_map = [(0.3, 0.5), (0.6, 0.5), (0.3, 0.7), (0.6, 0.7)]
     for i in range(4):
         radiobutton = CTkRadioButton(quiz_frame, text="", variable=selection, value=i, command=lambda: submit_answer_button.configure(state="normal"))
         radiobutton.configure(font=global_font_style)  # Apply global font style to radio buttons
         answer_radiobuttons.append(radiobutton)
-        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")  
+        radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
 
 
 
@@ -168,12 +171,13 @@ def hide_all_frames_except(frame_to_show):
             frame.pack_forget()
 
 def to_main_frame():
-    global subject_frame, difficulty_frame, options_frame
+    global subject_frame, difficulty_frame, options_frame, answer_radiobuttons
     container.pack(expand=True, fill=BOTH)
     hide_toggle_button()
     hide_all_frames_except(subject_frame)
     hide_check_labels()
-
+    
+    
     if subject_frame is not None:
         subject_frame.pack_forget()
 
@@ -204,7 +208,7 @@ def to_subject_frame():
     toggle_menu_button.configure(text="☰")  # Reset the toggle button text
 
 def select_options():
-    global options_frame
+    global options_frame, font_style_options
     container.pack_forget()  # Removes the main container that holds the 3 options = Begin, Options, Credits
     show_toggle_button()
 
@@ -213,8 +217,8 @@ def select_options():
     options_frame = CTkFrame(root)
     options_frame.pack(expand=True, fill=BOTH)
 
-    font_style_lbl_settings = ("Arial", 15, UNDERLINE)
-    options_title_lbl_settings = ("Arial", 24, UNDERLINE)
+    font_style_lbl_settings = (global_font_style[0], 15, UNDERLINE)
+    options_title_lbl_settings = (global_font_style[0], 24, UNDERLINE)
 
     options_lb = CTkLabel(options_frame, text="Options", text_color="Black", font=options_title_lbl_settings)
     options_lb.place(relx=0.3, rely=0.2)
@@ -230,6 +234,12 @@ def select_options():
 
     font_size_options = CTkComboBox(options_frame, values=[str(i) for i in range(8, 33, 2)], variable=font_size_var)
     font_size_options.place(relx=0.62, rely=0.42, anchor="center")
+
+    theme_label = CTkLabel(options_frame, text="Theme:")
+    theme_label.place(relx=0.37, rely=0.5)
+
+    theme_options = CTkComboBox(options_frame, values=["Light","Dark","Blue"], command=apply_theme)
+    theme_options.place(relx=0.5, rely=0.5)
 
     # Bind the font size option change directly to update_font_size function
     font_size_options.bind("<<ComboboxSelected>>", update_font_size_combobox)
@@ -331,7 +341,7 @@ def create_toggle_menu():
     menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", text_color="White", font=("Arial", 24))
     menu_label.pack(pady=10)
     
-    home_label = CTkButton(toggle_menu_frame, text="Home",  command=to_main_frame)
+    home_label = CTkButton(toggle_menu_frame, text="Home",  command=lambda: (to_main_frame(), recreate_radiobuttons()))
     home_label.pack(pady=10)
     
     options_label = CTkButton(toggle_menu_frame, text="Options",command=select_options)
@@ -478,7 +488,7 @@ def check_answer(qset):
         check_label2.place_forget()
         
     else:
-        check_label2.configure(text="Wrong ✗")
+        check_label2.configure(text="Incorrect ✗")
         check_label2.place(relx=0.75, rely=0.5)
         check_label1.place_forget()
     
