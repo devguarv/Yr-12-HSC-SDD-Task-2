@@ -42,7 +42,7 @@ global_font_family = "Arial"
 global_font_size = 12
 
 answer_radiobuttons = []
-selection = IntVar
+selection = IntVar()
 
 
 #Creating a local file access for the image to be imported
@@ -73,8 +73,9 @@ def update_font_size_combobox(event=None):
     global_font_style = (global_font_family, selected_font_size)
     subject_difficulty_text = ""
     apply_font_style()
-
-
+    to_main_frame()
+    select_options()
+    
 
 def update_font_style(selected_font_family, selected_font_size):
     global global_font_family, global_font_size, global_font_style
@@ -107,10 +108,13 @@ def recreate_radiobuttons():
     global answer_radiobuttons, selection, subject_difficulty_text, subject_title, difficulty_title
     for radiobutton in answer_radiobuttons: 
         radiobutton.destroy()
-        question_label.configure(text="") #Clears the question label, so it does not overlap
-        subject_difficulty_label.configure(text="") #Clears the subject difficulty label, so it does not overlap when quiz is created multiple times
-        subject_title.configure(text="") #Clears previous label text
-        difficulty_title.configure(text="")
+        try:
+            question_label.configure(text="") #Clears the question label, so it does not overlap
+            subject_difficulty_label.configure(text="") #Clears the subject difficulty label, so it does not overlap when quiz is created multiple times
+            subject_title.configure(text="") #Clears previous label text
+            difficulty_title.configure(text="")
+        except Exception:
+            pass
         
     answer_radiobuttons.clear() #Clears previous radiobutton options, so it is not saved
     
@@ -214,6 +218,11 @@ def on_font_style_change(*args):
     global_font_style = (global_font_family, global_font_size)
     apply_font_style()
 
+def update_appearance_mode(selection):
+    global appearance_mode
+    appearance_mode = selection
+    set_appearance_mode(selection.casefold())
+
 def select_options():
     global options_frame, font_style_options
     container.pack_forget()  # Removes the main container that holds the 3 options = Begin, Options, Credits
@@ -227,29 +236,30 @@ def select_options():
     font_style_lbl_settings = (global_font_style[0], 15, UNDERLINE)
     options_title_lbl_settings = (global_font_style[0], 24, UNDERLINE)
 
-    options_lb = CTkLabel(options_frame, text="Options", text_color="Black", font=options_title_lbl_settings)
+    options_lb = CTkLabel(options_frame, text="Options",  font=options_title_lbl_settings)
     options_lb.place(relx=0.3, rely=0.2)
 
-    font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings, text_color="Black")
+    font_style_label = CTkLabel(options_frame, text="Font Style:", font=font_style_lbl_settings)
     font_style_label.place(relx=0.37, rely=0.3)
 
     font_style_options = CTkOptionMenu(options_frame, values=["Arial", "Calibri", "Times New Roman"],  command=update_font_style_and_options)
     font_style_options.place(relx=0.5, rely=0.3)
 
-    font_size_label = CTkLabel(options_frame, text="Font Size:", font=font_style_lbl_settings, text_color="Black")
+    font_size_label = CTkLabel(options_frame, text="Font Size:", font=font_style_lbl_settings)
     font_size_label.place(relx=0.37, rely=0.4)
 
     font_size_options = CTkOptionMenu(options_frame, values=[str(i) for i in range(8, 21, 2)], variable=font_size_var, command=update_font_size_combobox)
     font_size_options.place(relx=0.62, rely=0.42, anchor="center")
 
-    theme_label = CTkLabel(options_frame, text="Theme:", font=font_style_lbl_settings, text_color="Black")
+    theme_label = CTkLabel(options_frame, text="Theme:", font=font_style_lbl_settings)
     theme_label.place(relx=0.37, rely=0.5)
 
-    theme_options = CTkOptionMenu(options_frame, values=["Light","Dark","Blue"], )
+    theme_options = CTkOptionMenu(options_frame, values=["Light", "Dark", "System"],  command=update_appearance_mode)
+    theme_options.set(appearance_mode)
     theme_options.place(relx=0.5, rely=0.5)
 
 
-    back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
+    back_btn = CTkButton(options_frame, text="Back",  width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
     # Adjust position of the toggle menu frame to the left
@@ -280,50 +290,50 @@ def to_credits():
     credits_frame.pack(expand=True, fill=BOTH)
 
     title_font = ("Arial", 24, UNDERLINE)
-    credits_title_lbl = CTkLabel(credits_frame, text="Credits", text_color="Black", font=title_font, anchor="center")
+    credits_title_lbl = CTkLabel(credits_frame, text="Credits",  font=title_font, anchor="center")
     credits_title_lbl.place(relx=0.2, rely=0.1)
 
     status_lbl = CTkLabel(credits_frame, text="Status of Program: Open Source", text_color="Green", anchor="center")
     status_lbl.place(relx=0.37, rely=0.04)
 
-    job1_lbl = CTkLabel(credits_frame, text="Lead Developer: ", text_color="Black", anchor="center")
+    job1_lbl = CTkLabel(credits_frame, text="Lead Developer: ",  anchor="center")
     job1_lbl.place(relx=0.2, rely=0.2)
 
-    job2_lbl = CTkLabel(credits_frame, text="Project Manager: ", text_color="Black", anchor="center")
+    job2_lbl = CTkLabel(credits_frame, text="Project Manager: ",  anchor="center")
     job2_lbl.place(relx=0.2, rely=0.3)
 
-    job3_lbl = CTkLabel(credits_frame, text="UI Designer: ", text_color="Black", anchor="center")
+    job3_lbl = CTkLabel(credits_frame, text="UI Designer: ",  anchor="center")
     job3_lbl.place(relx=0.2, rely=0.4)
 
-    job4_lbl = CTkLabel(credits_frame, text="System Designer: ", text_color="Black", anchor="center")
+    job4_lbl = CTkLabel(credits_frame, text="System Designer: ",  anchor="center")
     job4_lbl.place(relx=0.2, rely=0.5)
 
-    job5_lbl = CTkLabel(credits_frame, text="Data Analyst: ", text_color="Black", anchor="center")
+    job5_lbl = CTkLabel(credits_frame, text="Data Analyst: ",  anchor="center")
     job5_lbl.place(relx=0.2, rely=0.6)
 
-    job6_lbl = CTkLabel(credits_frame, text="Scrum Master: ", text_color="Black", anchor="center")
+    job6_lbl = CTkLabel(credits_frame, text="Scrum Master: ",  anchor="center")
     job6_lbl.place(relx=0.2, rely=0.7)
 
-    devprakash_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl = CTkLabel(credits_frame, text="Dev Prakash",  anchor="center")
     devprakash_lbl.place(relx=0.4, rely=0.2)
 
-    devprakash1_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash1_lbl = CTkLabel(credits_frame, text="Dev Prakash",  anchor="center")
     devprakash1_lbl.place(relx=0.4, rely=0.3)
 
-    devprakash2_lbl = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash2_lbl = CTkLabel(credits_frame, text="Dev Prakash",  anchor="center")
     devprakash2_lbl.place(relx=0.4, rely=0.4)
 
-    devprakash_lbl3 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl3 = CTkLabel(credits_frame, text="Dev Prakash",  anchor="center")
     devprakash_lbl3.place(relx=0.4, rely=0.5)
 
-    devprakash_lbl4 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl4 = CTkLabel(credits_frame, text="Dev Prakash",  anchor="center")
     devprakash_lbl4.place(relx=0.4, rely=0.6)
 
-    devprakash_lbl5 = CTkLabel(credits_frame, text="Dev Prakash", text_color="Black", anchor="center")
+    devprakash_lbl5 = CTkLabel(credits_frame, text="Dev Prakash",  anchor="center")
     devprakash_lbl5.place(relx=0.4, rely=0.7)
 
     back_button = CTkButton(credits_frame, text="Back", width=10, image=v2leftarrow_img, compound="left",
-                             text_color="White", command=to_main_frame)
+                              command=to_main_frame)
     back_button.place(relx=0.15, rely=0.9, anchor="center")
 
     apply_font_style()
@@ -338,21 +348,25 @@ def toggle_menu():
 
 toggle_menu_button = CTkButton(root, text="☰", width=10, command=toggle_menu)
 
+def do_toggle_menu_action(callback):
+    callback()
+    recreate_radiobuttons()
+
 def create_toggle_menu():
     global toggle_menu_frame
-    toggle_menu_frame = CTkFrame(root, width=200, fg_color="Gray")
+    toggle_menu_frame = CTkFrame(root, width=200)
     
 
-    menu_label = CTkLabel(toggle_menu_frame, text="Side Menu", text_color="White", font=("Arial", 24))
+    menu_label = CTkLabel(toggle_menu_frame, text="Side Menu",  font=("Arial", 24))
     menu_label.pack(pady=10)
     
-    home_label = CTkButton(toggle_menu_frame, text="Home",  command=lambda: (to_main_frame(), recreate_radiobuttons())) #User goes to main frame, and radiobuttons and q label is cleared
+    home_label = CTkButton(toggle_menu_frame, text="Home",  command=lambda: do_toggle_menu_action(to_main_frame)) #User goes to main frame, and radiobuttons and q label is cleared
     home_label.pack(pady=10)
     
-    options_label = CTkButton(toggle_menu_frame, text="Options",command=lambda: (select_options(),recreate_radiobuttons()))
+    options_label = CTkButton(toggle_menu_frame, text="Options",command=lambda: do_toggle_menu_action(select_options))
     options_label.pack(pady=10)
 
-    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=lambda: (to_credits(), recreate_radiobuttons()))
+    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=lambda: do_toggle_menu_action(to_credits))
     credits_label.pack(pady=10)
 
     toggle_menu_button.place(x=10, y=10)
@@ -393,19 +407,19 @@ def select_subject():
 
     subject_title_font = (global_font_style[0], 24, UNDERLINE)
 
-    subject_title = CTkLabel(subject_frame, text="1. Select Subject", text_color="Black", font=subject_title_font)
+    subject_title = CTkLabel(subject_frame, text="1. Select Subject",  font=subject_title_font)
     subject_title.place(relx=0.5, rely=0.35, anchor="center")
 
-    phys_btn = CTkButton(subject_frame, text="⚫ Physics", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Physics"))
+    phys_btn = CTkButton(subject_frame, text="⚫ Physics",  image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Physics"))
     phys_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    chem_btn = CTkButton(subject_frame, text="⚫ Chemistry", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Chemistry"))
+    chem_btn = CTkButton(subject_frame, text="⚫ Chemistry",  image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Chemistry"))
     chem_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    bio_btn = CTkButton(subject_frame, text="⚫ Biology", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Biology"))
+    bio_btn = CTkButton(subject_frame, text="⚫ Biology",  image=v2arrow_img, compound="right", corner_radius=32, command=lambda: select_difficulty("Biology"))
     bio_btn.place(relx=0.5, rely=0.7, anchor="center")
 
-    back_btn = CTkButton(subject_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
+    back_btn = CTkButton(subject_frame, text="Back",  width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
     apply_font_style()  # Apply font style after creating subject frame
@@ -423,19 +437,19 @@ def select_difficulty(subject):
 
 
     difficulty_title_font = (global_font_style[0], 24, UNDERLINE)
-    difficulty_title = CTkLabel(difficulty_frame, text="2. Select Difficulty", text_color="Black", font=difficulty_title_font)
+    difficulty_title = CTkLabel(difficulty_frame, text="2. Select Difficulty",  font=difficulty_title_font)
     difficulty_title.place(relx=0.5, rely=0.35, anchor="center")
 
-    easy_btn = CTkButton(difficulty_frame, text="⚫ Easy", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command = lambda: start_quiz(subject, "Easy"))
+    easy_btn = CTkButton(difficulty_frame, text="⚫ Easy",  image=v2arrow_img, compound="right", corner_radius=32, command = lambda: start_quiz(subject, "Easy"))
     easy_btn.place(relx=0.5, rely=0.5, anchor="center")
 
-    med_btn = CTkButton(difficulty_frame, text="⚫ Medium", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Medium"))
+    med_btn = CTkButton(difficulty_frame, text="⚫ Medium",  image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Medium"))
     med_btn.place(relx=0.5, rely=0.6, anchor="center")
 
-    hard_btn = CTkButton(difficulty_frame, text="⚫ Hard", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Hard"))
+    hard_btn = CTkButton(difficulty_frame, text="⚫ Hard",  image=v2arrow_img, compound="right", corner_radius=32, command =  lambda: start_quiz(subject, "Hard"))
     hard_btn.place(relx=0.5, rely=0.7, anchor="center")
 
-    back_btn = CTkButton(difficulty_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_subject_frame)
+    back_btn = CTkButton(difficulty_frame, text="Back",  width=10, image=v2leftarrow_img, compound="left", command=to_subject_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
 
     apply_font_style()
@@ -469,9 +483,9 @@ def check_answer(qset):
 
     #Initialise check_label1, check_label2
     if check_label1 is None:
-        check_label1 = CTkLabel(root, text="", bg_color="#dbdbdb", font=font_checklbl, text_color="Green")
+        check_label1 = CTkLabel(root, text="", font=font_checklbl, text_color="Green")
     if check_label2 is None:
-        check_label2 = CTkLabel(root, text="", bg_color="#dbdbdb", font=font_checklbl, text_color="Red")
+        check_label2 = CTkLabel(root, text="", font=font_checklbl, text_color="Red")
 
     #place labels off screen
     check_label1.place(relx=-1000, rely=-1000)
@@ -570,22 +584,22 @@ def start_quiz(subject, difficulty):
 
 #Creating title label
 title_font = (global_font_style[0], 24, UNDERLINE)
-title_label = CTkLabel( container, text="Trifecta Quest", text_color="Black", font= title_font, image=v2atom_img, compound="right")
+title_label = CTkLabel( container, text="Trifecta Quest",  font= title_font, image=v2atom_img, compound="right")
 title_label.place(relx=0.5, rely=0.35, anchor="center")
 
 # Creating the begin button
-begin_btn = CTkButton(container, text="Begin", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command= select_subject)
+begin_btn = CTkButton(container, text="Begin",  image=v2arrow_img, compound="right", corner_radius=32, command= select_subject)
 begin_btn.place(relx=0.5, rely=0.5, anchor="center")
 
 #Creating options button
-options_btn = CTkButton(container, text="Options", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=select_options)
+options_btn = CTkButton(container, text="Options",  image=v2arrow_img, compound="right", corner_radius=32, command=select_options)
 options_btn.place(relx=0.5, rely=0.6, anchor="center")
 
 #Creating the credits button
-credits_btn = CTkButton(container, text="Credits", text_color="White", image=v2arrow_img, compound="right", corner_radius=32, command=to_credits)
+credits_btn = CTkButton(container, text="Credits",  image=v2arrow_img, compound="right", corner_radius=32, command=to_credits)
 credits_btn.place(relx=0.5, rely=0.7, anchor="center")
 
-
+appearance_mode = get_appearance_mode().title()
 
 
 root.mainloop()
