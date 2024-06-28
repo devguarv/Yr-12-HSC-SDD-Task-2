@@ -76,11 +76,12 @@ def apply_theme(theme):
 
 
 def update_font_size_combobox(event=None):
-    global global_font_style, global_font_family
+    global global_font_style, global_font_family, subject_difficulty_text
     selected_font_family = font_style_options.get()
     selected_font_size = int(font_size_var.get())
     global_font_family = selected_font_family
     global_font_style = (global_font_family, selected_font_size)
+    subject_difficulty_text = ""
     apply_font_style()
     update_title_font_size()
     
@@ -116,11 +117,14 @@ quiz_radiobuttons_created = False
 
 # Allows for the recreation of radiobuttons after quiz has been completed / user selects a different frame
 def recreate_radiobuttons():
-    global answer_radiobuttons, selection
+    global answer_radiobuttons, selection, subject_difficulty_text
     for radiobutton in answer_radiobuttons: 
         radiobutton.destroy()
         question_label.configure(text="") #Clears the question label, so it does not overlap
+        subject_difficulty_label.configure(text="") #Clears the subject difficulty label, so it does not overlap when quiz is created multiple times
+        
     answer_radiobuttons.clear() #Clears previous radiobutton options, so it is not saved
+    
 
     placement_map = [(0.3, 0.5), (0.6, 0.5), (0.3, 0.7), (0.6, 0.7)]
     for i in range(4):
@@ -129,11 +133,12 @@ def recreate_radiobuttons():
         answer_radiobuttons.append(radiobutton)
         radiobutton.place(relx=placement_map[i][0], rely=placement_map[i][1], anchor="center")
 
+    
 
 
 
 def place_quiz_widgets():
-    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text, selected_font_size
+    global question_label, answer_radiobuttons, quiz_frame, selection, submit_answer_button, subject_difficulty_text, selected_font_size, subject_difficulty_label
 
     quiz_frame.pack(expand=True, fill=BOTH)
     toggle_menu_frame.place_forget()
@@ -241,7 +246,7 @@ def select_options():
     font_size_label = CTkLabel(options_frame, text="Font Size:")
     font_size_label.place(relx=0.37, rely=0.4)
 
-    font_size_options = CTkOptionMenu(options_frame, values=[str(i) for i in range(8, 21, 2)], variable=font_size_var)
+    font_size_options = CTkOptionMenu(options_frame, values=[str(i) for i in range(8, 21, 2)], variable=font_size_var, command=update_font_size_combobox)
     font_size_options.place(relx=0.62, rely=0.42, anchor="center")
 
     theme_label = CTkLabel(options_frame, text="Theme:")
@@ -250,10 +255,6 @@ def select_options():
     theme_options = CTkOptionMenu(options_frame, values=["Light","Dark","Blue"], command=apply_theme)
     theme_options.place(relx=0.5, rely=0.5)
 
-    # Bind the font size option change directly to update_font_size function
-    font_size_options.bind("<<OptionMenuSelected>>", update_font_size_combobox)
-
-    font_size_options.bind("<<OptionMenuSelected>>", lambda event: update_title_font_size())
 
     back_btn = CTkButton(options_frame, text="Back", text_color="White", width=10, image=v2leftarrow_img, compound="left", command=to_main_frame)
     back_btn.place(relx=0.15, rely=0.9, anchor="center")
@@ -548,7 +549,7 @@ def back_to_subject():
     select_subject()
 
 def start_quiz(subject, difficulty):
-    global question_set, subject_difficulty_text
+    global question_set, subject_difficulty_text, subject_difficulty_label
     difficulty_frame.pack_forget()
     show_toggle_button()
     hide_toggle_menu_frame()
@@ -560,6 +561,7 @@ def start_quiz(subject, difficulty):
     place_quiz_widgets() #Places new base widgets for each qeustion
 
     reconfigure_question_info(question_set[0]) #Initiliase question info
+    
 
 
 
