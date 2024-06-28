@@ -33,7 +33,7 @@ check_label2 = None
 score = 0 #Tracks Quiz Score
 quiz_restarted = False #Flag variable indicating whether the quiz has been restarted
 # Global Font Style Variable
-global_font_style = ("Arial", 15)
+global_font_style = ("Arial", 12)
 font_size_var = StringVar(value="12")
 container = CTkFrame(root) #To store the main widgets for simplicity
 container.pack(expand=True, fill=BOTH)
@@ -63,37 +63,6 @@ atom_img = Image.open(atom_img_path).resize(small_atom_size)
 v2arrow_img = CTkImage(arrow_img)
 v2leftarrow_img = CTkImage(left_arrow_img)
 v2atom_img = CTkImage(atom_img)
-
-def apply_theme(theme):
-    themes = {
-        "Light": {"bg": "#FFFFFF", "fg": "Black"},
-        "Dark": {"bg": "#2E2E2E", "fg": "White"},
-        "Blue": {"bg": "#87CEEB", "fg": "Black"}
-    }
-
-    # Update the main window background color
-    root.configure(bg=themes[theme]["bg"])
-
-    # Update the background color of all frames
-    for frame in [
-        subject_frame,
-        difficulty_frame,
-        options_frame,
-        quiz_frame,
-        credits_frame,
-        final_score_frame,
-        quiz_progress,
-        container,
-        toggle_menu_frame,
-    ]:
-        frame.configure(bg=themes[theme]["bg"])
-
-    # Update the text color of all labels and buttons to ensure readability
-    for widget in container.winfo_children():
-        if isinstance(
-            widget, (CTkLabel, CTkButton, CTkRadioButton, CTkComboBox)
-        ):
-            widget.configure(fg=themes[theme]["fg"])
             
 
 def update_font_size_combobox(event=None):
@@ -104,7 +73,7 @@ def update_font_size_combobox(event=None):
     global_font_style = (global_font_family, selected_font_size)
     subject_difficulty_text = ""
     apply_font_style()
-    update_title_font_size()
+
 
 
 def update_font_style(selected_font_family, selected_font_size):
@@ -124,13 +93,14 @@ def make_buttons_bigger():
     for button in main_buttons:
         button.configure(font=(global_font_style[0], global_font_style[1] + 8))
 
-def update_title_font_size():
-    global title_label, global_font_style
+'''def update_title_font_size():
+    global title_label, global_font_style, selected_font_size
     selected_font_size = int(font_size_var.get())
-    title_font = (global_font_style[0], selected_font_size + 12)
-    title_label.configure(font=title_font)
+    title_font = ("Arial", 30, UNDERLINE)
+    title_label.configure(font=title_font)'''
 
 quiz_radiobuttons_created = False
+
 
 # Allows for the recreation of radiobuttons after quiz has been completed / user selects a different frame
 def recreate_radiobuttons():
@@ -275,7 +245,7 @@ def select_options():
     theme_label = CTkLabel(options_frame, text="Theme:", font=font_style_lbl_settings, text_color="Black")
     theme_label.place(relx=0.37, rely=0.5)
 
-    theme_options = CTkOptionMenu(options_frame, values=["Light","Dark","Blue"], command=apply_theme)
+    theme_options = CTkOptionMenu(options_frame, values=["Light","Dark","Blue"], )
     theme_options.place(relx=0.5, rely=0.5)
 
 
@@ -289,6 +259,8 @@ def select_options():
     toggle_menu_button.configure(text="☰")  # Reset the toggle button text
 
     apply_font_style()  # Apply font style after creating options frame
+
+    
 
 def to_credits():
     global credits_frame, quiz_frame
@@ -380,7 +352,7 @@ def create_toggle_menu():
     options_label = CTkButton(toggle_menu_frame, text="Options",command=lambda: (select_options(),recreate_radiobuttons()))
     options_label.pack(pady=10)
 
-    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=lambda: (to_credits, recreate_radiobuttons()))
+    credits_label = CTkButton(toggle_menu_frame, text="Credits",command=lambda: (to_credits(), recreate_radiobuttons()))
     credits_label.pack(pady=10)
 
     toggle_menu_button.place(x=10, y=10)
@@ -597,7 +569,7 @@ def start_quiz(subject, difficulty):
 
 
 #Creating title label
-title_font = (global_font_style[0], 30)
+title_font = (global_font_style[0], 24, UNDERLINE)
 title_label = CTkLabel( container, text="Trifecta Quest", text_color="Black", font= title_font, image=v2atom_img, compound="right")
 title_label.place(relx=0.5, rely=0.35, anchor="center")
 
