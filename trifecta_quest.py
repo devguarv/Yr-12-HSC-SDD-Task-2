@@ -94,12 +94,6 @@ def make_buttons_bigger():
     for button in main_buttons:
         button.configure(font=(global_font_style[0], global_font_style[1] + 8))
 
-'''def update_title_font_size():
-    global title_label, global_font_style, selected_font_size
-    selected_font_size = int(font_size_var.get())
-    title_font = ("Arial", 30, UNDERLINE)
-    title_label.configure(font=title_font)'''
-
 quiz_radiobuttons_created = False
 
 
@@ -578,9 +572,6 @@ def start_quiz(subject, difficulty):
 
     reconfigure_question_info(question_set[0]) #Initiliase question info
     
-
-
-
 
 #Creating title label
 title_font = (global_font_style[0], 24, UNDERLINE)
