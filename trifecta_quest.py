@@ -44,6 +44,17 @@ global_font_size = 12
 answer_radiobuttons = []
 selection = IntVar()
 
+#Bug Testing Tools  
+'''
+quiz_restarted = False #Initiliase and checking if quiz was restarted
+
+if quiz_restarted:
+    return
+quiz_restarted = True #Sets to True after 1st Restart
+'''
+
+def start_quiz(subject,difficulty):
+    print(f"Starting quiz wiht subject: {subject}, difficulty: {difficulty}")
 
 #Creating a local file access for the image to be imported
 arrow_img_path = path.join(DIR_NAME, "Assets", "white arrow.png") #Joins directory with the path of asset, and through the usage of os path it allows for asset to load globally
