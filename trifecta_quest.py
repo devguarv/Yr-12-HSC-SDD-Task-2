@@ -500,12 +500,12 @@ def check_answer(qset):
         #Update the correct label
         score = score + 1 
         check_label1.configure(text="Right ✓")
-        check_label1.place(relx=0.75, rely=0.5)
+        check_label1.place(relx=0.5, rely=0.80, anchor="center")
         check_label2.place_forget()
         
     else:
         check_label2.configure(text="Incorrect ✗")
-        check_label2.place(relx=0.75, rely=0.5)
+        check_label2.place(relx=0.5, rely=0.80, anchor="center")
         check_label1.place_forget()
     
 
